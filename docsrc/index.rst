@@ -1,0 +1,35 @@
+Charging Infrastructure Simulation Suite
+========================================
+
+.. raw:: html
+
+   <div class="container-fluid">
+     <div class="row">
+       <div class="col-md-8">
+
+
+
+This python package simulates the charging infrastructure evolution of specific locations.
+To see the code or report a bug, please visit the `GitHub repository
+<https://www.github.com/Ajax23/ChargeSim>`_.
+
+
+.. raw:: html
+
+       </div>
+       <div class="col-md-4">
+         <div class="panel panel-default">
+           <div class="panel-heading">
+             <h3 class="panel-title">API Contents</h3>
+           </div>
+       <div class="panel-body">
+
+* Utilities :ref:`API <utilities_api>`
+
+.. raw:: html
+
+       </div>
+     </div>
+   </div>
+   </div>
+   </div>
