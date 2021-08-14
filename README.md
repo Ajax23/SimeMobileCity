@@ -17,7 +17,7 @@ The docs include an [API reference](https://ajax23.github.io/ChargeSim/api.html)
 
 ChargeSim supports Python 3.5+.
 
-Installation requires [numpy](https://numpy.org/), [pandas](https://pandas.pydata.org/).
+Installation requires [osmnx](https://osmnx.readthedocs.io/en/stable/), [scikit-learn](https://scikit-learn.org/stable/index.html), [pandas](https://pandas.pydata.org/) and [seaborn](https://seaborn.pydata.org/).
 
 
 ## Installation
