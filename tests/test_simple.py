@@ -5,7 +5,6 @@ import shutil
 import unittest
 
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 
 import chargesim as cs
@@ -95,7 +94,7 @@ class UserModelCase(unittest.TestCase):
         topo.plot(routes=[route, route], is_station=False)
         topo.plot(routes=[route], is_station=False)
         topo.plot(is_station=True)
-        
+
         plt.savefig("output/map.pdf", format="pdf", dpi=1000)
 
 
