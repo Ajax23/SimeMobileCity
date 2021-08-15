@@ -4,7 +4,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Ajax23/ChargeSim/blob/master/LICENSE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4738036.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
 [![Build Status](https://github.com/Ajax23/ChargeSim/actions/workflows/workflow.yml/badge.svg)](https://github.com/Ajax23/ChargeSim/actions/workflows/workflow.yml)
-[![codecov](https://codecov.io/gh/Ajax23/ChargeSim/branch/master/graph/badge.svg)](https://codecov.io/gh/Ajax23/ChargeSim)
+[![codecov](https://codecov.io/gh/Ajax23/ChargeSim/branch/master/graph/badge.svg?token=AXx3JTujap)](https://codecov.io/gh/Ajax23/ChargeSim)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Ajax23/ChargeSim.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ajax23/ChargeSim/context:python)
 
 ## Documentation

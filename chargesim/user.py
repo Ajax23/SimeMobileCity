@@ -19,12 +19,7 @@ class User:
     def __init__(self, probability={}, ident=""):
         # Process input
         self._ident = ident
-        self._p = probability
-        if not self._p:
-            for day in range(7):
-                self._p[day] = {}
-                for hour in range(24):
-                    self._p[day][hour] = 1/7
+        self._p = probability if probability else {day: {hour: 1/7 for hour in range(24)} for day in range(7)}
 
 
     ##################

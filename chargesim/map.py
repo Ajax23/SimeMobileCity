@@ -32,6 +32,7 @@ class Map:
         # Process input
         self._G = ox.graph_from_place(loc["name"], network_type="walk") if not "G" in loc.keys() else loc["G"]
         self._Gp = ox.project_graph(self._G) if not "Gp" in loc.keys() else loc["Gp"]
+        self._nodes = list(self._G)
 
         # Get charging stations
         if tags:
@@ -210,11 +211,11 @@ class Map:
         return self._capacity
 
     def get_nodes(self):
-        """Get charging station capacity.
+        """Get list of nodes of graph.
 
         Returns
         -------
-        val : dictionary
-            charging station capacity
+        val : list
+            List of node ids of graph
         """
-        return self._capacity
+        return self._nodes
