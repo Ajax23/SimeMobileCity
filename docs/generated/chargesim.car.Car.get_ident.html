@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Map.dist_charge &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>Car.get_ident &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Map.dist_charge</a></li>
+<li><a class="reference internal" href="#">Car.get_ident</a></li>
 </ul>
 </ul>
 </li>
@@ -106,32 +106,19 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="map-dist-charge">
-<h1>Map.dist_charge<a class="headerlink" href="#map-dist-charge" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="car-get-ident">
+<h1>Car.get_ident<a class="headerlink" href="#car-get-ident" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
-<dt id="chargesim.map.Map.dist_charge">
-<code class="descclassname">Map.</code><code class="descname">dist_charge</code><span class="sig-paren">(</span><em>orig</em>, <em>is_route=False</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map.dist_charge" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the distance to nearest charging station.</p>
+<dt id="chargesim.car.Car.get_ident">
+<code class="descclassname">Car.</code><code class="descname">get_ident</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.car.Car.get_ident" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return car name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>orig</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
-<dd><p class="first last">Node of origin</p>
-</dd>
-<dt><strong>is_route</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">True to return route</p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>route_len</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
-<dd><p class="first last">Route length in m</p>
-</dd>
-<dt><strong>route</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
-<dd><p class="first last">Route as list of nodes</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Car name</p>
 </dd>
 </dl>
 </td>

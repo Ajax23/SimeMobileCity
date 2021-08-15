@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Map.get_capacity &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>Poi.set_p_hour &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Map.get_capacity</a></li>
+<li><a class="reference internal" href="#">Poi.set_p_hour</a></li>
 </ul>
 </ul>
 </li>
@@ -106,19 +106,25 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="map-get-capacity">
-<h1>Map.get_capacity<a class="headerlink" href="#map-get-capacity" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="poi-set-p-hour">
+<h1>Poi.set_p_hour<a class="headerlink" href="#poi-set-p-hour" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
-<dt id="chargesim.map.Map.get_capacity">
-<code class="descclassname">Map.</code><code class="descname">get_capacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map.get_capacity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get charging station capacity.</p>
+<dt id="chargesim.poi.Poi.set_p_hour">
+<code class="descclassname">Poi.</code><code class="descname">set_p_hour</code><span class="sig-paren">(</span><em>day</em>, <em>hour</em>, <em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi.set_p_hour" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set probability for an hour.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">charging station capacity</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>day</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd><p class="first last">Day index</p>
+</dd>
+<dt><strong>hour</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
+<dd><p class="first last">Hour index</p>
+</dd>
+<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Probability of selected hour</p>
 </dd>
 </dl>
 </td>

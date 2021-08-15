@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>User &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>Poi &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">User</a></li>
+<li><a class="reference internal" href="#">Poi</a></li>
 </ul>
 </ul>
 </li>
@@ -106,23 +106,29 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="user">
-<h1>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="poi">
+<h1>Poi<a class="headerlink" href="#poi" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="chargesim.user.User">
-<em class="property">class </em><code class="descclassname">chargesim.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>p={}</em>, <em>ident=''</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.user.User" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class defines a user.</p>
+<dt id="chargesim.poi.Poi">
+<em class="property">class </em><code class="descclassname">chargesim.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>name</em>, <em>radius=200</em>, <em>p={}</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class defines a point of interest.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>topo</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Map</span></dt>
+<dd><p class="first last">Map/topology object</p>
+</dd>
+<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
+<dd><p class="first last">Optional car name</p>
+</dd>
+<dt><strong>radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Distance of nodes from poi center in m</p>
+</dd>
 <dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
 <dd><p class="first last">Dictionary containing leave probabilities for each day - if empty, all
 hours have the same probability</p>
-</dd>
-<dt><strong>ident</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
-<dd><p class="first last">Optional user name</p>
 </dd>
 </dl>
 </td>
@@ -136,28 +142,34 @@ hours have the same probability</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.user.User.get_ident.html#chargesim.user.User.get_ident" title="chargesim.user.User.get_ident"><code class="xref py py-obj docutils literal"><span class="pre">get_ident</span></code></a>()</td>
-<td>Return user name.</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_G.html#chargesim.poi.Poi.get_G" title="chargesim.poi.Poi.get_G"><code class="xref py py-obj docutils literal"><span class="pre">get_G</span></code></a>()</td>
+<td>Get OSM graph object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.user.User.get_p.html#chargesim.user.User.get_p" title="chargesim.user.User.get_p"><code class="xref py py-obj docutils literal"><span class="pre">get_p</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.get_map.html#chargesim.poi.Poi.get_map" title="chargesim.poi.Poi.get_map"><code class="xref py py-obj docutils literal"><span class="pre">get_map</span></code></a>()</td>
+<td>Return Map object.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_name.html#chargesim.poi.Poi.get_name" title="chargesim.poi.Poi.get_name"><code class="xref py py-obj docutils literal"><span class="pre">get_name</span></code></a>()</td>
+<td>Return poi name.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.get_nodes.html#chargesim.poi.Poi.get_nodes" title="chargesim.poi.Poi.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
+<td>Get list of nodes of graph.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_p.html#chargesim.poi.Poi.get_p" title="chargesim.poi.Poi.get_p"><code class="xref py py-obj docutils literal"><span class="pre">get_p</span></code></a>()</td>
 <td>Return complete probability dictionary.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.user.User.get_p_day.html#chargesim.user.User.get_p_day" title="chargesim.user.User.get_p_day"><code class="xref py py-obj docutils literal"><span class="pre">get_p_day</span></code></a>(day)</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.get_p_day.html#chargesim.poi.Poi.get_p_day" title="chargesim.poi.Poi.get_p_day"><code class="xref py py-obj docutils literal"><span class="pre">get_p_day</span></code></a>(day)</td>
 <td>Return probability for a day.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.user.User.get_p_hour.html#chargesim.user.User.get_p_hour" title="chargesim.user.User.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_p_hour.html#chargesim.poi.Poi.get_p_hour" title="chargesim.poi.Poi.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
 <td>Return probability for an hour.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.user.User.set_ident.html#chargesim.user.User.set_ident" title="chargesim.user.User.set_ident"><code class="xref py py-obj docutils literal"><span class="pre">set_ident</span></code></a>(val)</td>
-<td>Set user name.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.user.User.set_p.html#chargesim.user.User.set_p" title="chargesim.user.User.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(val)</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.set_p.html#chargesim.poi.Poi.set_p" title="chargesim.poi.Poi.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(val)</td>
 <td>Set complete probability dictionary.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.user.User.set_p_day.html#chargesim.user.User.set_p_day" title="chargesim.user.User.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.set_p_day.html#chargesim.poi.Poi.set_p_day" title="chargesim.poi.Poi.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>
 <td>Set probability for a day.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.user.User.set_p_hour.html#chargesim.user.User.set_p_hour" title="chargesim.user.User.set_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">set_p_hour</span></code></a>(day,&nbsp;hour,&nbsp;val)</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.set_p_hour.html#chargesim.poi.Poi.set_p_hour" title="chargesim.poi.Poi.set_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">set_p_hour</span></code></a>(day,&nbsp;hour,&nbsp;val)</td>
 <td>Set probability for an hour.</td>
 </tr>
 </tbody>

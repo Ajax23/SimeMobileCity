@@ -5,9 +5,9 @@
     </div>
     <div class=col-md-9 content>
 
-Map\.get\_capacity
-==================
+Map\.charging\_station
+======================
 
 .. currentmodule:: chargesim.map
 
-.. automethod:: Map.get_capacity
+.. automethod:: Map.charging_station

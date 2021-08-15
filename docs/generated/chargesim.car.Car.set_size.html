@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Map.plot &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>Car.set_size &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Map.plot</a></li>
+<li><a class="reference internal" href="#">Car.set_size</a></li>
 </ul>
 </ul>
 </li>
@@ -106,36 +106,19 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="map-plot">
-<h1>Map.plot<a class="headerlink" href="#map-plot" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="car-set-size">
+<h1>Car.set_size<a class="headerlink" href="#car-set-size" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
-<dt id="chargesim.map.Map.plot">
-<code class="descclassname">Map.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>pois=[]</em>, <em>routes=[]</em>, <em>ax=None</em>, <em>kwargs={'G': {}</em>, <em>'P': {}</em>, <em>'R': {}}</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot graph optionally with chargin stations and routes.</p>
+<dt id="chargesim.car.Car.set_size">
+<code class="descclassname">Car.</code><code class="descname">set_size</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.car.Car.set_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set battery size.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>poi</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
-<dd><p class="first last">List of points of interest graphs to show</p>
-</dd>
-<dt><strong>routes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
-<dd><p class="first last">List of routes to show</p>
-</dd>
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Axis, optional</span></dt>
-<dd><p class="first last">Axis object</p>
-</dd>
-<dt><strong>kwargs: dictionary, optional</strong></dt>
-<dd><p class="first last">Dictionary with plotting parameters for the graph <strong>G</strong>, Pois <strong>P</strong>
-and routes <strong>R</strong></p>
-</dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Axis</span></dt>
-<dd><p class="first last">Axis object</p>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Battery size in kWh</p>
 </dd>
 </dl>
 </td>

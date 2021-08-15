@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Map.plot &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>Map.charging_station &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Map.plot</a></li>
+<li><a class="reference internal" href="#">Map.charging_station</a></li>
 </ul>
 </ul>
 </li>
@@ -106,36 +106,29 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="map-plot">
-<h1>Map.plot<a class="headerlink" href="#map-plot" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="map-charging-station">
+<h1>Map.charging_station<a class="headerlink" href="#map-charging-station" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
-<dt id="chargesim.map.Map.plot">
-<code class="descclassname">Map.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>pois=[]</em>, <em>routes=[]</em>, <em>ax=None</em>, <em>kwargs={'G': {}</em>, <em>'P': {}</em>, <em>'R': {}}</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map.plot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot graph optionally with chargin stations and routes.</p>
+<dt id="chargesim.map.Map.charging_station">
+<code class="descclassname">Map.</code><code class="descname">charging_station</code><span class="sig-paren">(</span><em>name='charging_station'</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map.charging_station" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create charging station graph and capacity dictionaries.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>poi</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
-<dd><p class="first last">List of points of interest graphs to show</p>
-</dd>
-<dt><strong>routes</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list, optional</span></dt>
-<dd><p class="first last">List of routes to show</p>
-</dd>
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Axis, optional</span></dt>
-<dd><p class="first last">Axis object</p>
-</dd>
-<dt><strong>kwargs: dictionary, optional</strong></dt>
-<dd><p class="first last">Dictionary with plotting parameters for the graph <strong>G</strong>, Pois <strong>P</strong>
-and routes <strong>R</strong></p>
+<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
+<dd><p class="first last">Charging station tag name</p>
 </dd>
 </dl>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>ax</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Axis</span></dt>
-<dd><p class="first last">Axis object</p>
+<dt><strong>stations</strong> <span class="classifier-delimiter">:</span> <span class="classifier">networkx.MultiDiGraph</span></dt>
+<dd><p class="first last">OSM graph object containing all charging stations</p>
+</dd>
+<dt><strong>capacity</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
+<dd><p class="first last">Charging stations capacities</p>
 </dd>
 </dl>
 </td>

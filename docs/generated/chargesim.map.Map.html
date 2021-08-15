@@ -110,7 +110,7 @@
 <h1>Map<a class="headerlink" href="#map" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="chargesim.map.Map">
-<em class="property">class </em><code class="descclassname">chargesim.map.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>loc</em>, <em>tags={'amenity': ['charging_station']}</em>, <em>log=True</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">chargesim.map.</code><code class="descname">Map</code><span class="sig-paren">(</span><em>loc</em>, <em>log=True</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.map.Map" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class is a python wrapper for the osmnx package. The input is a
 dictionary containing the location name <strong>name</strong>, and optionally preloaded
 graph <strong>G</strong> and projection objects <strong>Gp</strong>.</p>
@@ -122,7 +122,7 @@ graph <strong>G</strong> and projection objects <strong>Gp</strong>.</p>
 <dt><strong>loc</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
 <dd><p class="first last">Location for simulation as dictionary {“name”: “”, “G”: None, “Gp”: None}</p>
 </dd>
-<dt><strong>log</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dt><strong>log</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
 <dd><p class="first last">True to print osmnx console output</p>
 </dd>
 </dl>
@@ -137,32 +137,29 @@ graph <strong>G</strong> and projection objects <strong>Gp</strong>.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.dist.html#chargesim.map.Map.dist" title="chargesim.map.Map.dist"><code class="xref py py-obj docutils literal"><span class="pre">dist</span></code></a>(orig,&nbsp;dest[,&nbsp;is_route])</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.charging_station.html#chargesim.map.Map.charging_station" title="chargesim.map.Map.charging_station"><code class="xref py py-obj docutils literal"><span class="pre">charging_station</span></code></a>([name])</td>
+<td>Create charging station graph and capacity dictionaries.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.dist.html#chargesim.map.Map.dist" title="chargesim.map.Map.dist"><code class="xref py py-obj docutils literal"><span class="pre">dist</span></code></a>(orig,&nbsp;dest[,&nbsp;is_route])</td>
 <td>Calculate the distance between two locations</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.dist_charge.html#chargesim.map.Map.dist_charge" title="chargesim.map.Map.dist_charge"><code class="xref py py-obj docutils literal"><span class="pre">dist_charge</span></code></a>(orig[,&nbsp;is_route])</td>
-<td>Calculate the distance to nearest charging station.</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.dist_poi.html#chargesim.map.Map.dist_poi" title="chargesim.map.Map.dist_poi"><code class="xref py py-obj docutils literal"><span class="pre">dist_poi</span></code></a>(orig,&nbsp;poi[,&nbsp;is_route])</td>
+<td>Calculate the distance to nearest poi node.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.get_G.html#chargesim.map.Map.get_G" title="chargesim.map.Map.get_G"><code class="xref py py-obj docutils literal"><span class="pre">get_G</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.get_G.html#chargesim.map.Map.get_G" title="chargesim.map.Map.get_G"><code class="xref py py-obj docutils literal"><span class="pre">get_G</span></code></a>()</td>
 <td>Get OSM graph object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.get_Gp.html#chargesim.map.Map.get_Gp" title="chargesim.map.Map.get_Gp"><code class="xref py py-obj docutils literal"><span class="pre">get_Gp</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.get_Gp.html#chargesim.map.Map.get_Gp" title="chargesim.map.Map.get_Gp"><code class="xref py py-obj docutils literal"><span class="pre">get_Gp</span></code></a>()</td>
 <td>Get OSM graph projection object.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.get_capacity.html#chargesim.map.Map.get_capacity" title="chargesim.map.Map.get_capacity"><code class="xref py py-obj docutils literal"><span class="pre">get_capacity</span></code></a>()</td>
-<td>Get charging station capacity.</td>
-</tr>
 <tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.get_nodes.html#chargesim.map.Map.get_nodes" title="chargesim.map.Map.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
-<td>Get charging station capacity.</td>
+<td>Get list of nodes of graph.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.get_station.html#chargesim.map.Map.get_station" title="chargesim.map.Map.get_station"><code class="xref py py-obj docutils literal"><span class="pre">get_station</span></code></a>()</td>
-<td>Get charging station graph object.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.plot.html#chargesim.map.Map.plot" title="chargesim.map.Map.plot"><code class="xref py py-obj docutils literal"><span class="pre">plot</span></code></a>([routes,&nbsp;ax,&nbsp;is_station,&nbsp;kwargs])</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.plot.html#chargesim.map.Map.plot" title="chargesim.map.Map.plot"><code class="xref py py-obj docutils literal"><span class="pre">plot</span></code></a>([pois,&nbsp;routes,&nbsp;ax,&nbsp;kwargs])</td>
 <td>Plot graph optionally with chargin stations and routes.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.map.Map.set_station.html#chargesim.map.Map.set_station" title="chargesim.map.Map.set_station"><code class="xref py py-obj docutils literal"><span class="pre">set_station</span></code></a>(tags)</td>
-<td>Set charging station graph.</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.map.Map.poi.html#chargesim.map.Map.poi" title="chargesim.map.Map.poi"><code class="xref py py-obj docutils literal"><span class="pre">poi</span></code></a>(name[,&nbsp;radius,&nbsp;is_gdf])</td>
+<td>Get nodes for given point of interest.</td>
 </tr>
 </tbody>
 </table>

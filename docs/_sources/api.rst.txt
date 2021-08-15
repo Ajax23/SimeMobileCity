@@ -15,7 +15,9 @@ Simulation
     :toctree: generated/
 
     user.User
+    car.Car
     map.Map
+    poi.Poi
 
 
 .. _utils_api:
