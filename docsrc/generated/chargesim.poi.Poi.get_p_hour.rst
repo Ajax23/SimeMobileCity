@@ -5,9 +5,9 @@
     </div>
     <div class=col-md-9 content>
 
-Map\.set\_station
+Poi\.get\_p\_hour
 =================
 
-.. currentmodule:: chargesim.map
+.. currentmodule:: chargesim.poi
 
-.. automethod:: Map.set_station
+.. automethod:: Poi.get_p_hour

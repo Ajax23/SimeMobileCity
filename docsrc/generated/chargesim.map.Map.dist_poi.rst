@@ -5,9 +5,9 @@
     </div>
     <div class=col-md-9 content>
 
-Map\.get\_station
-=================
+Map\.dist\_poi
+==============
 
 .. currentmodule:: chargesim.map
 
-.. automethod:: Map.get_station
+.. automethod:: Map.dist_poi

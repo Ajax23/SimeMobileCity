@@ -21,10 +21,10 @@ class Map:
     ----------
     loc : dictionary
         Location for simulation as dictionary {"name": "", "G": None, "Gp": None}
-    log : bool
+    log : bool, optional
         True to print osmnx console output
     """
-    def __init__(self, loc, tags={"amenity" : ["charging_station"]}, log=True):
+    def __init__(self, loc, log=True):
         # Set osmnx output
         ox.config(log_console=log)
         self._loc = loc
@@ -33,10 +33,6 @@ class Map:
         self._G = ox.graph_from_place(loc["name"], network_type="walk") if not "G" in loc.keys() else loc["G"]
         self._Gp = ox.project_graph(self._G) if not "Gp" in loc.keys() else loc["Gp"]
         self._nodes = list(self._G)
-
-        # Get charging stations
-        if tags:
-            self.set_station(tags)
 
     def dist(self, orig, dest, is_route=False):
         """Calculate the distance between two locations
@@ -67,13 +63,15 @@ class Map:
         else:
             return route_len
 
-    def dist_charge(self, orig, is_route=False):
-        """Calculate the distance to nearest charging station.
+    def dist_poi(self, orig, poi, is_route=False):
+        """Calculate the distance to nearest poi node.
 
         Parameters
         ----------
         orig : integer
             Node of origin
+        poi : networkx.MultiDiGraph
+            Poi graph
         is_route : bool
             True to return route
 
@@ -88,23 +86,110 @@ class Map:
         pos = dict(self._G.nodes(data=True))[orig]
 
         # Get nearest charging station
-        dest = ox.nearest_nodes(self._C, pos["x"], pos["y"])
+        dest = ox.nearest_nodes(poi, pos["x"], pos["y"])
 
         # Get shortest route
         return self.dist(orig, dest, is_route)
 
-    def plot(self, routes=[], ax=None, is_station=True, kwargs={"G": {}, "C": {}, "R": {}}):
+    def poi(self, name, radius=0, is_gdf=False):
+        """Get nodes for given point of interest.
+
+        Parameters
+        ----------
+        name : string
+            OSM name for point of interest
+        radius : float, optional
+            Distance of pois from center in m
+        is_gdf : bool, optional
+            True to return GDF object
+
+        Returns
+        -------
+        poi : networkx.MultiDiGraph
+            OSM graph object
+        gdf : geopandas.GeoDataFrame, optional
+            GDF object
+        """
+        # Get pois geometry
+        gdf = ox.geometries_from_place(self._loc["name"], tags={"amenity" : [name]})
+
+        # Find nearest nodes in graph
+        pos = gdf["geometry"]["node"]
+        poi_nodes = ox.nearest_nodes(self._G, pos.x, pos.y)
+
+        # Find nodes within radius
+        if radius:
+            nodes = []
+            for node in poi_nodes:
+                poi = nx.ego_graph(self._G, node, radius, distance="length")
+                nodes += list(poi)
+            nodes = list(set(nodes))
+        else:
+            nodes = poi_nodes
+
+        # Create subgraph from nodes
+        P = self._G.subgraph(poi_nodes)
+
+        # Return
+        if is_gdf:
+            return P, gdf
+        else:
+            return P
+
+    def charging_station(self, name="charging_station"):
+        """Create charging station graph and capacity dictionaries.
+
+        Parameters
+        ----------
+        name : string, optional
+            Charging station tag name
+
+        Returns
+        -------
+        stations : networkx.MultiDiGraph
+            OSM graph object containing all charging stations
+        capacity : dictionary
+            Charging stations capacities
+        """
+        # Get chargin stations
+        gdf = ox.geometries_from_place(self._loc["name"], tags={"amenity" : [name]})
+
+        # Find nearest nodes in graph
+        pos = gdf["geometry"]
+        nodes = ox.nearest_nodes(self._G, pos.x, pos.y)
+
+        # Create subgraph from nodes
+        C = self._G.subgraph(nodes)
+
+        # Create list conatining capacities
+        capacity_list = gdf["capacity"]
+        capacity_list = pd.to_numeric(capacity_list, downcast="integer")
+        capacity_list = {node: int(val) if not math.isnan(val) else 1 for node, val in dict(capacity_list["node"]).items()}
+
+        capacity = {}
+        for i, node in enumerate(pos["node"].index):
+            node_new = nodes[i]
+            if node_new not in capacity:
+                capacity[node_new] = capacity_list[node]
+            else:
+                capacity[node_new] += capacity_list[node]
+
+        return C, capacity
+
+    def plot(self, pois=[], routes=[], ax=None, kwargs={"G": {}, "P": {}, "R": {}}):
         """Plot graph optionally with chargin stations and routes.
 
         Parameters
         ----------
+        poi : list, optional
+            List of points of interest graphs to show
         routes : list, optional
             List of routes to show
         ax : Axis, optional
             Axis object
         kwargs: dictionary, optional
-            Dictionary with plotting parameters for the graph **G**, charging
-            stations **C** and routes **R**
+            Dictionary with plotting parameters for the graph **G**, Pois **P**
+            and routes **R**
 
         Returns
         -------
@@ -119,8 +204,9 @@ class Map:
         ox.plot_graph(self._G, ax=ax, node_size= 0, edge_linewidth=1, edge_color="#262626", show=False, edge_alpha=0.1, **kwargs["G"])
 
         # Plot charging stations
-        if is_station:
-            ox.plot_graph(self._C, ax=ax, node_size=40, edge_linewidth=0, node_color="#4C72B0", show=False, **kwargs["C"])
+        if pois:
+            for poi in pois:
+                ox.plot_graph(poi, ax=ax, node_size=40, edge_linewidth=0, node_color="#4C72B0", show=False, **kwargs["P"])
 
         # Plot routes
         if routes:
@@ -130,41 +216,6 @@ class Map:
                 ox.plot_graph_routes(self._G, routes, ax=ax, route_color="#C44E52", route_linewidth=6, node_size=0, **kwargs["R"])
 
         return ax
-
-
-    ##################
-    # Setter Methods #
-    ##################
-    def set_station(self, tags):
-        """Set charging station graph.
-
-        Parameters
-        ----------
-        tags : dictionary
-            OSM tags for charging station
-        """
-        # Get chargin stations
-        gdf = ox.geometries_from_place(self._loc["name"], tags)
-
-        # Find nearest nodes in graph
-        pos = gdf["geometry"]
-        nodes = ox.nearest_nodes(self._G, pos.x, pos.y)
-
-        # Create subgraph containing charging stations
-        self._C = self._G.subgraph(nodes)
-
-        # Create list conatining capacities
-        capacity = gdf["capacity"]
-        capacity = pd.to_numeric(capacity, downcast="integer")
-        capacity = {node: int(val) if not math.isnan(val) else 1 for node, val in dict(capacity["node"]).items()}
-
-        self._capacity = {}
-        for i, node in enumerate(pos["node"].index):
-            node_new = nodes[i]
-            if node_new not in self._capacity:
-                self._capacity[node_new] = capacity[node]
-            else:
-                self._capacity[node_new] += capacity[node]
 
 
     ##################
@@ -189,26 +240,6 @@ class Map:
             OSM graph projection object
         """
         return self._Gp
-
-    def get_station(self):
-        """Get charging station graph object.
-
-        Returns
-        -------
-        val : networkx.MultiDiGraph
-            charging station graph projection object
-        """
-        return self._C
-
-    def get_capacity(self):
-        """Get charging station capacity.
-
-        Returns
-        -------
-        val : dictionary
-            charging station capacity
-        """
-        return self._capacity
 
     def get_nodes(self):
         """Get list of nodes of graph.

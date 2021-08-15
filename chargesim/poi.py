@@ -1,25 +1,34 @@
 ################################################################################
-# User Class                                                                   #
+# Poi Class                                                                    #
 #                                                                              #
-"""Class defining user types."""
+"""Class defining points of interest."""
 ################################################################################
 
 
-class User:
-    """This class defines a user.
+class Poi:
+    """This class defines a point of interest.
 
     Parameters
     ----------
+    topo : Map
+        Map/topology object
+    name : string
+        Optional car name
+    radius : float, optional
+        Distance of nodes from poi center in m
     p : dictionary, optional
         Dictionary containing leave probabilities for each day - if empty, all
         hours have the same probability
-    ident : string, optional
-        Optional user name
     """
-    def __init__(self, p={}, ident=""):
+    def __init__(self, topo, name, radius=200, p={}):
         # Process input
-        self._ident = ident
+        self._map = topo
+        self._name = name
         self._p = p if p else {day: {hour: 1/7 for hour in range(24)} for day in range(7)}
+
+        # Load graph
+        self._G = topo.poi(name, radius=radius)
+        self._nodes = list(self._G)
 
 
     ##################
@@ -61,20 +70,50 @@ class User:
         """
         self._p[day][hour] = val
 
-    def set_ident(self, val):
-        """Set user name.
-
-        Parameters
-        ----------
-        val : string
-            User name
-        """
-        self._ident = val
-
 
     ##################
     # Getter Methods #
     ##################
+    def get_map(self):
+        """Return Map object.
+
+        Returns
+        -------
+        val : Map
+            Map object
+        """
+        return self._map
+
+    def get_name(self):
+        """Return poi name.
+
+        Returns
+        -------
+        val : string
+            Poi name
+        """
+        return self._name
+
+    def get_G(self):
+        """Get OSM graph object.
+
+        Returns
+        -------
+        val : networkx.MultiDiGraph
+            OSM graph object
+        """
+        return self._G
+
+    def get_nodes(self):
+        """Get list of nodes of graph.
+
+        Returns
+        -------
+        val : list
+            List of node ids of graph
+        """
+        return self._nodes
+
     def get_p(self):
         """Return complete probability dictionary.
 
@@ -116,13 +155,3 @@ class User:
             Probability of selected hour
         """
         return self._p[day][hour]
-
-    def get_ident(self):
-        """Return user name.
-
-        Returns
-        -------
-        val : string
-            User name
-        """
-        return self._ident

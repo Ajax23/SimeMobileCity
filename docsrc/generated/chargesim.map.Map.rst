@@ -16,13 +16,12 @@ Map
    .. rubric:: Methods
 
    .. autosummary::
-
+   
+      ~Map.charging_station
       ~Map.dist
-      ~Map.dist_charge
+      ~Map.dist_poi
       ~Map.get_G
       ~Map.get_Gp
-      ~Map.get_capacity
       ~Map.get_nodes
-      ~Map.get_station
       ~Map.plot
-      ~Map.set_station
+      ~Map.poi

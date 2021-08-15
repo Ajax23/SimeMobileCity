@@ -16,7 +16,7 @@ User
    .. rubric:: Methods
 
    .. autosummary::
-
+   
       ~User.get_ident
       ~User.get_p
       ~User.get_p_day
