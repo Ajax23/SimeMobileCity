@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Poi &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>Topology &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Poi</a></li>
+<li><a class="reference internal" href="#">Topology</a></li>
 </ul>
 </ul>
 </li>
@@ -106,29 +106,24 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="poi">
-<h1>Poi<a class="headerlink" href="#poi" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="topology">
+<h1>Topology<a class="headerlink" href="#topology" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="chargesim.poi.Poi">
-<em class="property">class </em><code class="descclassname">chargesim.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>name</em>, <em>radius=200</em>, <em>p={}</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class defines a point of interest.</p>
+<dt id="chargesim.topology.Topology">
+<em class="property">class </em><code class="descclassname">chargesim.topology.</code><code class="descname">Topology</code><span class="sig-paren">(</span><em>loc</em>, <em>is_log=True</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.topology.Topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is a python wrapper for the osmnx package. The input is a
+dictionary containing the location name <strong>name</strong>, and optionally preloaded
+graph <strong>G</strong> and projection objects <strong>Gp</strong>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>topo</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Topology</span></dt>
-<dd><p class="first last">Topology object</p>
+<dt><strong>loc</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
+<dd><p class="first last">Location for simulation as dictionary {“name”: “”, “G”: None, “Gp”: None}</p>
 </dd>
-<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Name of point of interest</p>
-</dd>
-<dt><strong>radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
-<dd><p class="first last">Distance of nodes from poi center in m</p>
-</dd>
-<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Dictionary containing leave probabilities for each day - if empty, all
-hours have the same probability</p>
+<dt><strong>is_log</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool, optional</span></dt>
+<dd><p class="first last">True to print osmnx console output</p>
 </dd>
 </dl>
 </td>
@@ -142,35 +137,29 @@ hours have the same probability</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_G.html#chargesim.poi.Poi.get_G" title="chargesim.poi.Poi.get_G"><code class="xref py py-obj docutils literal"><span class="pre">get_G</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.topology.Topology.charging_station.html#chargesim.topology.Topology.charging_station" title="chargesim.topology.Topology.charging_station"><code class="xref py py-obj docutils literal"><span class="pre">charging_station</span></code></a>([name])</td>
+<td>Create charging station graph and capacity dictionaries.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.topology.Topology.dist.html#chargesim.topology.Topology.dist" title="chargesim.topology.Topology.dist"><code class="xref py py-obj docutils literal"><span class="pre">dist</span></code></a>(orig,&nbsp;dest[,&nbsp;is_route])</td>
+<td>Calculate the distance between two locations</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.topology.Topology.dist_poi.html#chargesim.topology.Topology.dist_poi" title="chargesim.topology.Topology.dist_poi"><code class="xref py py-obj docutils literal"><span class="pre">dist_poi</span></code></a>(orig,&nbsp;poi)</td>
+<td>Calculate the distance to nearest poi node.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.topology.Topology.get_G.html#chargesim.topology.Topology.get_G" title="chargesim.topology.Topology.get_G"><code class="xref py py-obj docutils literal"><span class="pre">get_G</span></code></a>()</td>
 <td>Get OSM graph object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.get_name.html#chargesim.poi.Poi.get_name" title="chargesim.poi.Poi.get_name"><code class="xref py py-obj docutils literal"><span class="pre">get_name</span></code></a>()</td>
-<td>Return poi name.</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.topology.Topology.get_Gp.html#chargesim.topology.Topology.get_Gp" title="chargesim.topology.Topology.get_Gp"><code class="xref py py-obj docutils literal"><span class="pre">get_Gp</span></code></a>()</td>
+<td>Get OSM graph projection object.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_nodes.html#chargesim.poi.Poi.get_nodes" title="chargesim.poi.Poi.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.topology.Topology.get_nodes.html#chargesim.topology.Topology.get_nodes" title="chargesim.topology.Topology.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
 <td>Get list of nodes of graph.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.get_p.html#chargesim.poi.Poi.get_p" title="chargesim.poi.Poi.get_p"><code class="xref py py-obj docutils literal"><span class="pre">get_p</span></code></a>()</td>
-<td>Return complete probability dictionary.</td>
+<tr class="row-odd"><td><a class="reference internal" href="chargesim.topology.Topology.plot.html#chargesim.topology.Topology.plot" title="chargesim.topology.Topology.plot"><code class="xref py py-obj docutils literal"><span class="pre">plot</span></code></a>([pois,&nbsp;routes,&nbsp;ax,&nbsp;kwargs])</td>
+<td>Plot graph optionally with chargin stations and routes.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_p_day.html#chargesim.poi.Poi.get_p_day" title="chargesim.poi.Poi.get_p_day"><code class="xref py py-obj docutils literal"><span class="pre">get_p_day</span></code></a>(day)</td>
-<td>Return probability for a day.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.get_p_hour.html#chargesim.poi.Poi.get_p_hour" title="chargesim.poi.Poi.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
-<td>Return probability for an hour.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_topo.html#chargesim.poi.Poi.get_topo" title="chargesim.poi.Poi.get_topo"><code class="xref py py-obj docutils literal"><span class="pre">get_topo</span></code></a>()</td>
-<td>Return Topology object.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.set_p.html#chargesim.poi.Poi.set_p" title="chargesim.poi.Poi.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(val)</td>
-<td>Set complete probability dictionary.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.set_p_day.html#chargesim.poi.Poi.set_p_day" title="chargesim.poi.Poi.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>
-<td>Set probability for a day.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.set_p_hour.html#chargesim.poi.Poi.set_p_hour" title="chargesim.poi.Poi.set_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">set_p_hour</span></code></a>(day,&nbsp;hour,&nbsp;val)</td>
-<td>Set probability for an hour.</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.topology.Topology.poi.html#chargesim.topology.Topology.poi" title="chargesim.topology.Topology.poi"><code class="xref py py-obj docutils literal"><span class="pre">poi</span></code></a>(name[,&nbsp;radius,&nbsp;is_gdf])</td>
+<td>Get nodes for given point of interest.</td>
 </tr>
 </tbody>
 </table>

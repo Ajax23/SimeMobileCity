@@ -14,10 +14,12 @@ Simulation
 .. autosummary::
     :toctree: generated/
 
+    probability.P
     user.User
     car.Car
-    map.Map
+    topology.Topology
     poi.Poi
+    mc.MC
 
 
 .. _utils_api:
