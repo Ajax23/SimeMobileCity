@@ -1,5 +1,5 @@
 ################################################################################
-# Map Class                                                                    #
+# Topology Class                                                               #
 #                                                                              #
 """OSMNX python wrapper."""
 ################################################################################
@@ -12,7 +12,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-class Map:
+class Topology:
     """This class is a python wrapper for the osmnx package. The input is a
     dictionary containing the location name **name**, and optionally preloaded
     graph **G** and projection objects **Gp**.
@@ -21,12 +21,12 @@ class Map:
     ----------
     loc : dictionary
         Location for simulation as dictionary {"name": "", "G": None, "Gp": None}
-    log : bool, optional
+    is_log : bool, optional
         True to print osmnx console output
     """
-    def __init__(self, loc, log=True):
+    def __init__(self, loc, is_log=True):
         # Set osmnx output
-        ox.config(log_console=log)
+        ox.config(log_console=is_log)
         self._loc = loc
 
         # Process input
@@ -63,7 +63,7 @@ class Map:
         else:
             return route_len
 
-    def dist_poi(self, orig, poi, is_route=False):
+    def dist_poi(self, orig, poi):
         """Calculate the distance to nearest poi node.
 
         Parameters
@@ -72,15 +72,13 @@ class Map:
             Node of origin
         poi : networkx.MultiDiGraph
             Poi graph
-        is_route : bool
-            True to return route
 
         Returns
         -------
+        dest : integer
+            Node of destination
         route_len : float
             Route length in m
-        route : list, optional
-            Route as list of nodes
         """
         # Get position of origin
         pos = dict(self._G.nodes(data=True))[orig]
@@ -89,7 +87,7 @@ class Map:
         dest = ox.nearest_nodes(poi, pos["x"], pos["y"])
 
         # Get shortest route
-        return self.dist(orig, dest, is_route)
+        return dest, self.dist(orig, dest, is_route=False)
 
     def poi(self, name, radius=0, is_gdf=False):
         """Get nodes for given point of interest.

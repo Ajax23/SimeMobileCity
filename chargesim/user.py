@@ -5,7 +5,10 @@
 ################################################################################
 
 
-class User:
+from chargesim.probability import P
+
+
+class User(P):
     """This class defines a user.
 
     Parameters
@@ -17,50 +20,16 @@ class User:
         Optional user name
     """
     def __init__(self, p={}, ident=""):
+        # Call super class
+        super(User, self).__init__(p)
+
         # Process input
         self._ident = ident
-        self._p = p if p else {day: {hour: 1/7 for hour in range(24)} for day in range(7)}
 
 
     ##################
     # Setter Methods #
     ##################
-    def set_p(self, val):
-        """Set complete probability dictionary.
-
-        Parameters
-        ----------
-        val : dictionary
-            Probability dictionary for each day and hour
-        """
-        self._p = val
-
-    def set_p_day(self, day, val):
-        """Set probability for a day.
-
-        Parameters
-        ----------
-        day : integer
-            Day index
-        val : dictionary
-            Probability dictionary for a day with each hour
-        """
-        self._p[day] = val
-
-    def set_p_hour(self, day, hour, val):
-        """Set probability for an hour.
-
-        Parameters
-        ----------
-        day : integer
-            Day index
-        hour : integer
-            Hour index
-        val : float
-            Probability of selected hour
-        """
-        self._p[day][hour] = val
-
     def set_ident(self, val):
         """Set user name.
 
@@ -75,48 +44,6 @@ class User:
     ##################
     # Getter Methods #
     ##################
-    def get_p(self):
-        """Return complete probability dictionary.
-
-        Returns
-        -------
-        val : dictionary
-            Probability dictionary for each day and hour
-        """
-        return self._p
-
-    def get_p_day(self, day):
-        """Return probability for a day.
-
-        Parameters
-        ----------
-        day : integer
-            Day index
-
-        Returns
-        -------
-        val : dictionary
-            Probability dictionary for a day with each hour
-        """
-        return self._p[day]
-
-    def get_p_hour(self, day, hour):
-        """Return probability for an hour.
-
-        Parameters
-        ----------
-        day : integer
-            Day index
-        hour : integer
-            Hour index
-
-        Returns
-        -------
-        val : float
-            Probability of selected hour
-        """
-        return self._p[day][hour]
-
     def get_ident(self):
         """Return user name.
 
