@@ -201,12 +201,13 @@ class UserModelCase(unittest.TestCase):
 
         # Initialize
         mc = cs.MC(topo, users, pois, node_p=0.1)
+        # mc = cs.MC(topo, users, node_p=1)
 
         # Run MC
         mc.run(1, {day: 0 for day in range(7)})
         mc.run(1, {hour: 0 for hour in range(24)})
         mc.run(1, {day: {hour: 0 for hour in range(24)} for day in range(7)})
-        mc.run(1, 20)
+        mc.run(1, 20, np=0)
 
         # Plot occupancy
         occ = mc._stations
