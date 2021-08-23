@@ -2,7 +2,7 @@
 
 [![PyPI Version](https://img.shields.io/badge/PyPI-0.1.0-orange)](https://pypi.org/project/chargesim/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Ajax23/ChargeSim/blob/master/LICENSE)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4738036.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
+[![DOI](https://zenodo.org/badge/393620742.svg)](https://zenodo.org/badge/latestdoi/393620742)
 [![Build Status](https://github.com/Ajax23/ChargeSim/actions/workflows/workflow.yml/badge.svg)](https://github.com/Ajax23/ChargeSim/actions/workflows/workflow.yml)
 [![codecov](https://codecov.io/gh/Ajax23/ChargeSim/branch/master/graph/badge.svg?token=AXx3JTujap)](https://codecov.io/gh/Ajax23/ChargeSim)
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Ajax23/ChargeSim.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ajax23/ChargeSim/context:python)
