@@ -110,7 +110,7 @@
 <h1>Poi<a class="headerlink" href="#poi" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="chargesim.poi.Poi">
-<em class="property">class </em><code class="descclassname">chargesim.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>name</em>, <em>radius=200</em>, <em>p={}</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">chargesim.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>name</em>, <em>p</em>, <em>radius=200</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a point of interest.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -123,12 +123,14 @@
 <dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
 <dd><p class="first last">Name of point of interest</p>
 </dd>
+<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float</span></dt>
+<dd><p class="first last">Probability each hour each weekday, either a float for the same
+probability each hour, dictionary of hours for same hour distribution
+for all days, a dictionary of days for the same hour probability for
+different days, or a dictionary of days each with a dictionary of hours</p>
+</dd>
 <dt><strong>radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
 <dd><p class="first last">Distance of nodes from poi center in m</p>
-</dd>
-<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Dictionary containing leave probabilities for each day - if empty, all
-hours have the same probability</p>
 </dd>
 </dl>
 </td>
@@ -163,7 +165,7 @@ hours have the same probability</p>
 <tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.get_topo.html#chargesim.poi.Poi.get_topo" title="chargesim.poi.Poi.get_topo"><code class="xref py py-obj docutils literal"><span class="pre">get_topo</span></code></a>()</td>
 <td>Return Topology object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.set_p.html#chargesim.poi.Poi.set_p" title="chargesim.poi.Poi.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(val)</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.poi.Poi.set_p.html#chargesim.poi.Poi.set_p" title="chargesim.poi.Poi.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(p)</td>
 <td>Set complete probability dictionary.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="chargesim.poi.Poi.set_p_day.html#chargesim.poi.Poi.set_p_day" title="chargesim.poi.Poi.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>

@@ -110,20 +110,18 @@
 <h1>P<a class="headerlink" href="#p" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="chargesim.probability.P">
-<em class="property">class </em><code class="descclassname">chargesim.probability.</code><code class="descname">P</code><span class="sig-paren">(</span><em>p={}</em>, <em>base=0.14285714285714285</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.probability.P" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">chargesim.probability.</code><code class="descname">P</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.probability.P" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a probability object.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Dictionary containing leave probabilities for each day - if empty, all
-hours have the same probability</p>
-</dd>
-<dt><strong>base</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
-<dd><p class="first last">if probability dictionary is not give, probability list will be generated
-with given value for each hour</p>
+<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float</span></dt>
+<dd><p class="first last">Probability each hour each weekday, either a float for the same
+probability each hour, dictionary of hours for same hour distribution
+for all days, a dictionary of days for the same hour probability for
+different days, or a dictionary of days each with a dictionary of hours</p>
 </dd>
 </dl>
 </td>
@@ -146,7 +144,7 @@ with given value for each hour</p>
 <tr class="row-odd"><td><a class="reference internal" href="chargesim.probability.P.get_p_hour.html#chargesim.probability.P.get_p_hour" title="chargesim.probability.P.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
 <td>Return probability for an hour.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.probability.P.set_p.html#chargesim.probability.P.set_p" title="chargesim.probability.P.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(val)</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.probability.P.set_p.html#chargesim.probability.P.set_p" title="chargesim.probability.P.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(p)</td>
 <td>Set complete probability dictionary.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="chargesim.probability.P.set_p_day.html#chargesim.probability.P.set_p_day" title="chargesim.probability.P.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>

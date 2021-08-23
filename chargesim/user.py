@@ -13,13 +13,15 @@ class User(P):
 
     Parameters
     ----------
-    p : dictionary, optional
-        Dictionary containing leave probabilities for each day - if empty, all
-        hours have the same probability
+    p : dictionary, float
+        Probability each hour each weekday, either a float for the same
+        probability each hour, dictionary of hours for same hour distribution
+        for all days, a dictionary of days for the same hour probability for
+        different days, or a dictionary of days each with a dictionary of hours
     ident : string, optional
         Optional user name
     """
-    def __init__(self, p={}, ident=""):
+    def __init__(self, p, ident=""):
         # Call super class
         super(User, self).__init__(p)
 

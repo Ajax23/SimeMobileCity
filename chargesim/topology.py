@@ -126,7 +126,7 @@ class Topology:
             nodes = poi_nodes
 
         # Create subgraph from nodes
-        P = self._G.subgraph(poi_nodes)
+        P = self._G.subgraph(nodes)
 
         # Return
         if is_gdf:

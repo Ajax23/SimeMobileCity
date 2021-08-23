@@ -7,7 +7,6 @@
 
 import sys
 import random
-import osmnx as ox
 
 from chargesim.probability import P
 
@@ -23,25 +22,41 @@ class MC:
         Topology object
     users : list
         List of user objects
-    pois : list
+    pois : list, optional
         List of poi objects
-    node_p : P
-        Probability object desctibing probability of all nodes not covered by pois
+    node_p : dictionary, float, optional
+        Probability of all nodes not covered by pois each hour each weekday,
+        either a float for the same probability each hour, dictionary of hours
+        for same hour distribution for all days, a dictionary of days for the
+        same hour probability for different days, or a dictionary of days each
+        with a dictionary of hours
     """
-    def __init__(self, topo, users, pois=[], node_p=None):
+    def __init__(self, topo, users, pois=[], node_p=1):
         # Initialize
         self._topo = topo
         self._users = users
-        node_p = node_p if node_p is not None else P(base=1)
+        node_p = P(node_p)
 
         # Process pois
         p = {}
+        # max_p = 0
         for poi in pois:
             for node in poi.get_nodes():
                 if node not in p:
                     p[node] = P(p=poi.get_p())
                 else:
-                    p[node] = P(p={day: {hour: p.get_p_hour(day, hour)+poi.get_p_hour(day, hour) for hour in range(24)} for day in range(7)})
+                    temp_p = {}
+                    for day in range(7):
+                        temp_p[day] = {}
+                        for hour in range(24):
+                            temp_p[day][hour] = p[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
+                            # max_p = temp_p[day][hour] if temp_p[day][hour]>max_p else max_p
+                    p[node] = P(p=temp_p)
+
+        # Normalize if probability is greater than 1
+        # if max_p > 1:
+        #     for node in p:
+        #         p[node] = P(p={day: {hour: p[node].get_p_hour(day, hour)/max_p for hour in range(24)} for day in range(7)})
 
         # Fill empty nodes
         for node in topo.get_nodes():
@@ -77,15 +92,14 @@ class MC:
         if isinstance(drivers, int):
             drivers = {day: {hour: drivers for hour in range(24)} for day in range(7)}
         elif isinstance(drivers, dict):
-            if 0 in drivers.keys() and isinstance(drivers[0], dict):
-                drivers = drivers 
-            elif 23 in drivers.keys():
-                drivers = {day: {hour: drivers[hour] for hour in range(24)} for day in range(7)}
-            elif 6 in drivers.keys():
-                drivers = {day: {hour: drivers[day] for hour in range(24)} for day in range(7)}
-            else:
-                print("MC: Invalid dirver input...")
-                return
+            if not (0 in drivers.keys() and isinstance(drivers[0], dict)):
+                if 23 in drivers.keys():
+                    drivers = {day: {hour: drivers[hour] for hour in range(24)} for day in range(7)}
+                elif 6 in drivers.keys():
+                    drivers = {day: {hour: drivers[day] for hour in range(24)} for day in range(7)}
+                else:
+                    print("MC: Invalid dirver input...")
+                    return
         else:
             print("MC: Invalid dirver input...")
             return

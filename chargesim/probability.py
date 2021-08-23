@@ -10,30 +10,52 @@ class P:
 
     Parameters
     ----------
-    p : dictionary, optional
-        Dictionary containing leave probabilities for each day - if empty, all
-        hours have the same probability
-    base : float, optional
-        if probability dictionary is not give, probability list will be generated
-        with given value for each hour
+    p : dictionary, float
+        Probability each hour each weekday, either a float for the same
+        probability each hour, dictionary of hours for same hour distribution
+        for all days, a dictionary of days for the same hour probability for
+        different days, or a dictionary of days each with a dictionary of hours
     """
-    def __init__(self, p={}, base=1/7):
+    def __init__(self, p):
         # Process input
-        self._p = p if p else {day: {hour: base for hour in range(24)} for day in range(7)}
+        self.set_p(p)
 
 
     ##################
     # Setter Methods #
     ##################
-    def set_p(self, val):
+    def set_p(self, p):
         """Set complete probability dictionary.
 
         Parameters
         ----------
-        val : dictionary
-            Probability dictionary for each day and hour
+        p : dictionary, float
+            Probability each hour each weekday, either a float for the same
+            probability each hour, dictionary of hours for same hour
+            distribution for all days, a dictionary of days for the same hour
+            probability for different days, or a dictionary of days each with a
+            dictionary of hours
         """
-        self._p = val
+        if p:
+            if isinstance(p, float) or isinstance(p, int):
+                self._p = {day: {hour: p for hour in range(24)} for day in range(7)}
+            elif isinstance(p, dict):
+                if len(p.keys())==7 and 0 in p.keys() and isinstance(p[0], dict) and len(p[0].keys())==24:
+                    self._p = p
+                elif 23 in p.keys():
+                    self._p = {day: {hour: p[hour] for hour in range(24)} for day in range(7)}
+                elif 6 in p.keys():
+                    self._p = {day: {hour: p[day] for hour in range(24)} for day in range(7)}
+                else:
+                    print("P: Invalid dictionary input...")
+                    self._p = None
+            else:
+                print("P: Invalid probability input...")
+                self._p = None
+        else:
+            print("P: Dictionary p cannot be empty...")
+            self._p = None
+
 
     def set_p_day(self, day, val):
         """Set probability for a day.

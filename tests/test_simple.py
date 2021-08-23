@@ -68,9 +68,12 @@ class UserModelCase(unittest.TestCase):
     ###############
     # Probability #
     ###############
-    def test_user(self):
+    def test_p(self):
         # Initialize
-        p = cs.P()
+        p = cs.P(1)
+        p = cs.P({day: 1 for day in range(7)})
+        p = cs.P({hour: 1 for hour in range(24)})
+        p = cs.P({day: {hour: 1 for hour in range(24)} for day in range(7)})
 
         # Probability
         p.set_p({day: {hour: 1/7 for hour in range(24)} for day in range(7)})
@@ -80,13 +83,19 @@ class UserModelCase(unittest.TestCase):
         self.assertEqual(p.get_p_hour(0, 0), 0.5)
         self.assertEqual(p.get_p()[0][0], 0.5)
 
+        # Check errors
+        print()
+        self.assertIsNone(cs.P({}).get_p())
+        self.assertIsNone(cs.P("DOTA").get_p())
+        self.assertIsNone(cs.P({0: 1}).get_p())
+
 
     ########
     # User #
     ########
     def test_user(self):
         # Initialize
-        user = cs.User()
+        user = cs.User(1)
 
         # Ident
         user.set_ident("DOTA")
@@ -164,12 +173,12 @@ class UserModelCase(unittest.TestCase):
         G = cs.utils.load("data/munich_G.obj")
         Gp = cs.utils.load("data/munich_Gp.obj")
         topo = cs.Topology({"name": name, "G": G, "Gp": Gp})
-        poi = cs.Poi(topo, "cafe")
+        poi = cs.Poi(topo, "cafe", 1)
 
         self.assertEqual(poi.get_topo(), topo)
         self.assertEqual(poi.get_name(), "cafe")
-        self.assertEqual(list(poi.get_G())[0], 4692207617)
-        self.assertEqual(poi.get_nodes()[0], 4692207617)
+        self.assertEqual(list(poi.get_G())[0], 3571318797)
+        self.assertEqual(poi.get_nodes()[0], 3571318797)
 
 
     ######
@@ -185,13 +194,13 @@ class UserModelCase(unittest.TestCase):
         topo = cs.Topology({"name": name, "G": G, "Gp": Gp}, is_log=False)
 
         # Poi
-        pois = [cs.Poi(topo, "cafe")]
+        pois = [cs.Poi(topo, "cafe", 0.3), cs.Poi(topo, "restaurant", 0.3), cs.Poi(topo, "bar", 0.3)]
 
         # User
-        users = [cs.User()]
+        users = [cs.User(1)]
 
         # Initialize
-        mc = cs.MC(topo, users)
+        mc = cs.MC(topo, users, pois, node_p=0.1)
 
         # Run MC
         mc.run(1, {day: 0 for day in range(7)})

@@ -110,15 +110,19 @@
 <h1>Poi.set_p<a class="headerlink" href="#poi-set-p" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="chargesim.poi.Poi.set_p">
-<code class="descclassname">Poi.</code><code class="descname">set_p</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi.set_p" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Poi.</code><code class="descname">set_p</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.poi.Poi.set_p" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set complete probability dictionary.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">Probability dictionary for each day and hour</p>
+<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float</span></dt>
+<dd><p class="first last">Probability each hour each weekday, either a float for the same
+probability each hour, dictionary of hours for same hour
+distribution for all days, a dictionary of days for the same hour
+probability for different days, or a dictionary of days each with a
+dictionary of hours</p>
 </dd>
 </dl>
 </td>

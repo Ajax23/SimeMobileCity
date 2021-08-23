@@ -17,13 +17,15 @@ class Poi(P):
         Topology object
     name : string
         Name of point of interest
+    p : dictionary, float
+        Probability each hour each weekday, either a float for the same
+        probability each hour, dictionary of hours for same hour distribution
+        for all days, a dictionary of days for the same hour probability for
+        different days, or a dictionary of days each with a dictionary of hours
     radius : float, optional
         Distance of nodes from poi center in m
-    p : dictionary, optional
-        Dictionary containing leave probabilities for each day - if empty, all
-        hours have the same probability
     """
-    def __init__(self, topo, name, radius=200, p={}):
+    def __init__(self, topo, name, p, radius=200):
         # Call super class
         super(Poi, self).__init__(p)
 

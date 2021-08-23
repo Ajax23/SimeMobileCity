@@ -110,16 +110,18 @@
 <h1>User<a class="headerlink" href="#user" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="chargesim.user.User">
-<em class="property">class </em><code class="descclassname">chargesim.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>p={}</em>, <em>ident=''</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.user.User" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">chargesim.user.</code><code class="descname">User</code><span class="sig-paren">(</span><em>p</em>, <em>ident=''</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.user.User" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Dictionary containing leave probabilities for each day - if empty, all
-hours have the same probability</p>
+<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float</span></dt>
+<dd><p class="first last">Probability each hour each weekday, either a float for the same
+probability each hour, dictionary of hours for same hour distribution
+for all days, a dictionary of days for the same hour probability for
+different days, or a dictionary of days each with a dictionary of hours</p>
 </dd>
 <dt><strong>ident</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string, optional</span></dt>
 <dd><p class="first last">Optional user name</p>
@@ -151,7 +153,7 @@ hours have the same probability</p>
 <tr class="row-odd"><td><a class="reference internal" href="chargesim.user.User.set_ident.html#chargesim.user.User.set_ident" title="chargesim.user.User.set_ident"><code class="xref py py-obj docutils literal"><span class="pre">set_ident</span></code></a>(val)</td>
 <td>Set user name.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.user.User.set_p.html#chargesim.user.User.set_p" title="chargesim.user.User.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(val)</td>
+<tr class="row-even"><td><a class="reference internal" href="chargesim.user.User.set_p.html#chargesim.user.User.set_p" title="chargesim.user.User.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(p)</td>
 <td>Set complete probability dictionary.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="chargesim.user.User.set_p_day.html#chargesim.user.User.set_p_day" title="chargesim.user.User.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>
