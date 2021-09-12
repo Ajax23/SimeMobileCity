@@ -17,4 +17,7 @@ MC
 
    .. autosummary::
 
+      ~MC._prepare_nodes
+      ~MC.add_poi
+      ~MC.add_user
       ~MC.run

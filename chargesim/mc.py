@@ -6,9 +6,7 @@
 
 
 import sys
-# import math
 import random
-import multiprocessing as mp
 
 from chargesim.probability import P
 
@@ -16,16 +14,12 @@ from chargesim.probability import P
 class MC:
     """This class run a Monte Carlo simulation. Probability of every node is the
     sum of given probabilities from the poi list. This means, nodes intersecting
-    multiple poi.s have a higher probability than the single pois.
+    multiple pois have a higher probability than the single pois.
 
     Parameters
     ----------
     topo : Topology
         Topology object
-    users : list
-        List of user objects
-    pois : list, optional
-        List of poi objects
     node_p : dictionary, float, optional
         Probability of all nodes not covered by pois each hour each weekday,
         either a float for the same probability each hour, dictionary of hours
@@ -33,45 +27,81 @@ class MC:
         same hour probability for different days, or a dictionary of days each
         with a dictionary of hours
     """
-    def __init__(self, topo, users, pois=[], node_p=1):
+    def __init__(self, topo, node_p=0.1):
         # Initialize
         self._topo = topo
-        self._users = users
-        node_p = P(node_p)
+        self._node_p = P(node_p)
+        self._users = {}
+        self._pois = []
 
-        # Process pois
-        p = {}
-        # max_p = 0
-        for poi in pois:
+    def add_user(self, user, percentage):
+        """Add User to simulation system.
+
+        Parameters
+        ----------
+        user : User
+            User object
+        percentage : integer
+            Percentage of user in simulation from 1%-100% in steps of 1
+        """
+        # Process percentage
+        if not isinstance(percentage, int):
+            print("MC.user: Wrong percentage format...")
+            return
+        elif sum([x["percent"] for x in self._users.values()])+percentage > 100:
+            print("MC.user: Total percentage cannot be greater than 100 percent...")
+            return
+
+        # Append to list
+        self._users[len(self._users.keys())] = {"user": user, "percent": percentage}
+
+    def add_poi(self, poi):
+        """Add Poi to simulation system.
+
+        Parameters
+        ----------
+        poi : Poi
+            Poi object
+        """
+        self._pois.append(poi)
+
+    def _prepare_nodes(self):
+        """This helper function processes user and poi inputs into node list.
+        User ids are added to a user list for the nodes, to count the number
+        of successful and unsuccessfull attempts to reach destination.
+        Poi probabilities are added to the nodes to set the probability for
+        choosing certain nodes as a destination.
+        """
+        # Initialize
+        self._nodes = {}
+
+        # Process poi
+        for poi in self._pois:
             for node in poi.get_nodes():
-                if node not in p:
-                    p[node] = P(p=poi.get_p())
+                if node not in self._nodes.keys():
+                    self._nodes[node] = {"p": P(p=poi.get_p())}
                 else:
                     temp_p = {}
                     for day in range(7):
                         temp_p[day] = {}
                         for hour in range(24):
-                            temp_p[day][hour] = p[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
-                            # max_p = temp_p[day][hour] if temp_p[day][hour]>max_p else max_p
-                    p[node] = P(p=temp_p)
-
-        # Normalize if probability is greater than 1
-        # if max_p > 1:
-        #     for node in p:
-        #         p[node] = P(p={day: {hour: p[node].get_p_hour(day, hour)/max_p for hour in range(24)} for day in range(7)})
+                            temp_p[day][hour] = self._nodes[node]["p"].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
+                    self._nodes[node]["p"] = P(p=temp_p)
 
         # Fill empty nodes
-        for node in topo.get_nodes():
-            if node not in p:
-                p[node] = node_p
+        for node in self._topo.get_nodes():
+            if node not in self._nodes.keys():
+                self._nodes[node] = {"p": self._node_p}
 
-        self._nodes = p
+        # Process users
+        for node in self._nodes.keys():
+            self._nodes[node]["users"] = {u_id: {"success": 0, "fail": 0} for u_id in self._users.keys()}
 
         # Get charging stations
-        self._charge_G, self._capacity = topo.charging_station()
-        self._stations = {station: 0 for station in self._capacity.keys()}
+        self._charge_G, self._capacity = self._topo.charging_station()
+        self._stations = {station: {"max": capacity, "cap": 0, "users": {u_id: 0 for u_id in self._users.keys()}} for station, capacity in self._capacity.items()}
 
-    def run(self, weeks, drivers, np=1):
+    def run(self, weeks, drivers, max_dist=300):
         """Run Monte Carlo code.
 
         Parameters
@@ -81,8 +111,9 @@ class MC:
         drivers : dictionary, integer
             Number of drivers each hour, either an integer for the same hour,
             dictionary of hours or dictionary of days with a dictionary of hours
-        np : integer, optional
-            Number of cores to use, set zero to use all available
+        max_dist : float, optional
+            Maximal allowed walking distance
+
 
         Returns
         -------
@@ -91,6 +122,12 @@ class MC:
         """
         # Initialize
         progress_form = "%"+str(len(str(weeks*7)))+"i"
+
+        # Process users
+        if sum([x["percent"] for x in self._users.values()]) < 100:
+            print("MC.run: User percentages do not add up to 100...")
+            return
+        users = sum([[user_id for x in range(user["percent"])] for user_id, user in self._users.items()], [])
 
         # Process input
         if isinstance(drivers, int):
@@ -108,8 +145,8 @@ class MC:
             print("MC: Invalid dirver input...")
             return
 
-        # Get number of cores
-        np = np if np and np<=mp.cpu_count() else mp.cpu_count()
+        # Process nodes
+        self._prepare_nodes()
 
         # Run through weeks
         for week in range(weeks):
@@ -117,78 +154,58 @@ class MC:
             for day in range(7):
                 # Run through hours
                 for hour in range(24):
+                    ##############
+                    # Empty Step #
+                    ##############
+                    # Run through stations
+                    for station in self._stations.values():
+                        # Run through users
+                        for user_id in self._users.keys():
+                            # Get leaving probability
+                            user = self._users[user_id]["user"]
+                            p_leave = 1-user.get_p_hour(day, hour)
+                            # Run through users parking
+                            for i in range(station["users"][user_id]):
+                                rand = random.uniform(0, 1)
+                                # Check if user leaves
+                                if rand < p_leave:
+                                    station["cap"] -= 1
+                                    station["users"][user_id] -= 1
+
+                    ################
+                    # Filling Step #
+                    ################
                     # Run through dirvers
-                    if np>1:
-                        # # Distribute drivers on processors
-                        # driver_num = math.floor(drivers[day][hour]/np)
-                        # driver_np = [drivers[day][hour]-driver_num*(np-1) if i == np-1 else driver_num for i in range(np)]
-                        #
-                        # # Run parallelization
-                        # pool = mp.Pool(processes=np)
-                        # results = [pool.apply_async(self._run_helper, args=(x, day, hour,)) for x in driver_np]
-                        # pool.close()
-                        # pool.join()
-                        # output = [x.get() for x in results]
-                        #
-                        # # Destroy object
-                        # del results
-
-                        output = [self._run_helper(drivers[day][hour], day, hour)]
-                    else:
-                        # Run sampling
-                        output = [self._run_helper(drivers[day][hour], day, hour)]
-
-                    # Add stations
-                    for stations  in output:
-                        for station, capacity in stations.items():
-                            self._stations[station] += capacity
+                    for driver in range(drivers[day][hour]):
+                        # Choose random user
+                        user_id = random.choice(users)
+                        user = self._users[user_id]["user"]
+                        rand = random.uniform(0, 1)
+                        # User MC step
+                        if rand <= user.get_p_hour(day, hour):
+                            # Choose random node
+                            node = random.choice(list(self._nodes.keys()))
+                            rand = random.uniform(0, 1)
+                            # Poi MC step
+                            if rand <= self._nodes[node]["p"].get_p_hour(day, hour):
+                                # Calculate distance to nearest charging station
+                                dest, dist = self._topo.dist_poi(node, self._charge_G)
+                                # Check success
+                                is_success = 0
+                                if dist>max_dist:
+                                    is_success += 1
+                                if self._stations[dest]["cap"]==self._stations[dest]["max"]:
+                                    is_success += 1
+                                is_success = is_success==0
+                                # Process success or failure
+                                if is_success:
+                                    self._stations[dest]["cap"] += 1
+                                    self._stations[dest]["users"][user_id] += 1
+                                    self._nodes[node]["users"][user_id]["success"] += 1
+                                else:
+                                    self._nodes[node]["users"][user_id]["fail"] += 1
 
                 # Progress
                 sys.stdout.write("Finished day "+progress_form%(week*7+day+1)+"/"+progress_form%(weeks*7)+"...\r")
                 sys.stdout.flush()
         print()
-
-    def _run_helper(self, drivers, day, hour):
-        """Helper function for parallelization. This function goes through a
-        number of drivers and calculates the nodes and walking distances to the
-        charging stations.
-
-        Parameters
-        ----------
-        drivers : integer
-            Number of drivers to process
-        day : integer
-            Day number
-        hour : integer
-            Hour number
-
-        Returns
-        -------
-        stations : dictionary
-            Dictionary containing all destinations and their number of entries
-        """
-        # Initialize
-        stations = {}
-
-        # Run through dirvers
-        for driver in range(drivers):
-            # Choose random user
-            user = random.choice(self._users)
-            rand = random.uniform(0, 1)
-            # User MC step
-            if rand <= user.get_p_hour(day, hour):
-                # Choose random node
-                node = random.choice(list(self._nodes.keys()))
-                rand = random.uniform(0, 1)
-                # Poi MC step
-                if rand <= self._nodes[node].get_p_hour(day, hour):
-                    # Calculate distance to nearest charging station
-                    dest, dist = self._topo.dist_poi(node, self._charge_G)
-
-                    # Add stations
-                    if dest in stations:
-                        stations[dest] += 1
-                    else:
-                        stations[dest] = 1
-
-        return stations

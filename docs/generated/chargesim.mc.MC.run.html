@@ -110,7 +110,7 @@
 <h1>MC.run<a class="headerlink" href="#mc-run" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="chargesim.mc.MC.run">
-<code class="descclassname">MC.</code><code class="descname">run</code><span class="sig-paren">(</span><em>weeks</em>, <em>drivers</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.mc.MC.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">MC.</code><code class="descname">run</code><span class="sig-paren">(</span><em>weeks</em>, <em>drivers</em>, <em>max_dist=300</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.mc.MC.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run Monte Carlo code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -123,6 +123,9 @@
 <dt><strong>drivers</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, integer</span></dt>
 <dd><p class="first last">Number of drivers each hour, either an integer for the same hour,
 dictionary of hours or dictionary of days with a dictionary of hours</p>
+</dd>
+<dt><strong>max_dist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Maximal allowed walking distance</p>
 </dd>
 </dl>
 </td>

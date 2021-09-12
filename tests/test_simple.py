@@ -193,25 +193,30 @@ class UserModelCase(unittest.TestCase):
         Gp = cs.utils.load("data/munich_Gp.obj")
         topo = cs.Topology({"name": name, "G": G, "Gp": Gp}, is_log=False)
 
-        # Poi
-        pois = [cs.Poi(topo, "cafe", 0.3), cs.Poi(topo, "restaurant", 0.3), cs.Poi(topo, "bar", 0.3)]
-
-        # User
-        users = [cs.User(1)]
-
         # Initialize
-        mc = cs.MC(topo, users, pois, node_p=0.1)
-        # mc = cs.MC(topo, users, node_p=1)
+        mc = cs.MC(topo, node_p=0.1)
+        mc_temp = cs.MC(topo, node_p=0.1)
+
+        # Add pois
+        mc.add_poi(cs.Poi(topo, "cafe", 0.3))
+        mc.add_poi(cs.Poi(topo, "restaurant", 0.3))
+        mc.add_poi(cs.Poi(topo, "bar", 0.3))
+
+        # Add users
+        user_shop = cs.User({ 0: 0.05,  1: 0.05,  2: 0.10,  3: 0.15,  4: 0.20,  5: 0.25,  6: 0.30,  7: 0.40,  8: 0.50,  9: 0.70, 10: 0.90, 11: 1.00,
+                             12: 1.00, 13: 0.90, 14: 0.70, 15: 0.50, 16: 0.40, 17: 0.30, 18: 0.25, 19: 0.20, 20: 0.15, 21: 0.10, 22: 0.05, 23: 0.05})
+        mc.add_user(user_shop, 100)
+        mc_temp.add_user(cs.User(1), 1)
 
         # Run MC
         mc.run(1, {day: 0 for day in range(7)})
         mc.run(1, {hour: 0 for hour in range(24)})
         mc.run(1, {day: {hour: 0 for hour in range(24)} for day in range(7)})
-        mc.run(1, 20, np=0)
+        mc.run(1, 20)
 
         # Plot occupancy
         occ = mc._stations
-        data = [{"node": node, "x": G.nodes[node]["x"], "y": G.nodes[node]["y"], "capacity": capacity} for node, capacity in occ.items()]
+        data = [{"node": node, "x": G.nodes[node]["x"], "y": G.nodes[node]["y"], "capacity": data["cap"]} for node, data in occ.items()]
         df = pd.DataFrame(data)
         print(df)
 
@@ -221,6 +226,9 @@ class UserModelCase(unittest.TestCase):
         plt.savefig("output/mc.pdf", format="pdf", dpi=1000)
 
         # Check errors
+        self.assertIsNone(mc.add_user(cs.User(1), 1337))
+        self.assertIsNone(mc.add_user(cs.User(1), 13.37))
+        self.assertIsNone(mc_temp.run(1, 1))
         self.assertIsNone(mc.run(1, "DOTA"))
         self.assertIsNone(mc.run(1, {0: 1}))
 

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>MC &#8212; ChargeSim 0.1.0 documentation</title>
+    <title>MC.add_poi &#8212; ChargeSim 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">MC</a></li>
+<li><a class="reference internal" href="#">MC.add_poi</a></li>
 </ul>
 </ul>
 </li>
@@ -106,52 +106,22 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="mc">
-<h1>MC<a class="headerlink" href="#mc" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="chargesim.mc.MC">
-<em class="property">class </em><code class="descclassname">chargesim.mc.</code><code class="descname">MC</code><span class="sig-paren">(</span><em>topo</em>, <em>node_p=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.mc.MC" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class run a Monte Carlo simulation. Probability of every node is the
-sum of given probabilities from the poi list. This means, nodes intersecting
-multiple pois have a higher probability than the single pois.</p>
+<div class=col-md-9 content><div class="section" id="mc-add-poi">
+<h1>MC.add_poi<a class="headerlink" href="#mc-add-poi" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="chargesim.mc.MC.add_poi">
+<code class="descclassname">MC.</code><code class="descname">add_poi</code><span class="sig-paren">(</span><em>poi</em><span class="sig-paren">)</span><a class="headerlink" href="#chargesim.mc.MC.add_poi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Poi to simulation system.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>topo</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Topology</span></dt>
-<dd><p class="first last">Topology object</p>
-</dd>
-<dt><strong>node_p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float, optional</span></dt>
-<dd><p class="first last">Probability of all nodes not covered by pois each hour each weekday,
-either a float for the same probability each hour, dictionary of hours
-for same hour distribution for all days, a dictionary of days for the
-same hour probability for different days, or a dictionary of days each
-with a dictionary of hours</p>
+<dt><strong>poi</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Poi</span></dt>
+<dd><p class="first last">Poi object</p>
 </dd>
 </dl>
 </td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.mc.MC._prepare_nodes.html#chargesim.mc.MC._prepare_nodes" title="chargesim.mc.MC._prepare_nodes"><code class="xref py py-obj docutils literal"><span class="pre">_prepare_nodes</span></code></a>()</td>
-<td>This helper function processes user and poi inputs into node list.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.mc.MC.add_poi.html#chargesim.mc.MC.add_poi" title="chargesim.mc.MC.add_poi"><code class="xref py py-obj docutils literal"><span class="pre">add_poi</span></code></a>(poi)</td>
-<td>Add Poi to simulation system.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="chargesim.mc.MC.add_user.html#chargesim.mc.MC.add_user" title="chargesim.mc.MC.add_user"><code class="xref py py-obj docutils literal"><span class="pre">add_user</span></code></a>(user,&nbsp;percentage)</td>
-<td>Add User to simulation system.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="chargesim.mc.MC.run.html#chargesim.mc.MC.run" title="chargesim.mc.MC.run"><code class="xref py py-obj docutils literal"><span class="pre">run</span></code></a>(weeks,&nbsp;drivers[,&nbsp;max_dist])</td>
-<td>Run Monte Carlo code.</td>
 </tr>
 </tbody>
 </table>
