@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="simemobilecity",
-    version="0.0.1",
+    version="0.1.0",
     author="Hamzeh Kraus",
     author_email="hamzeh_kraus@web.de",
     description="Charging infrastructure simulation suite.",
