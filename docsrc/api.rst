@@ -9,7 +9,7 @@ API reference
 Simulation
 ----------
 
-.. currentmodule:: chargesim
+.. currentmodule:: simemobilecity
 
 .. autosummary::
     :toctree: generated/
@@ -27,7 +27,7 @@ Simulation
 Utilities
 ---------
 
-.. currentmodule:: chargesim
+.. currentmodule:: simemobilecity
 
 .. autosummary::
     :toctree: generated/

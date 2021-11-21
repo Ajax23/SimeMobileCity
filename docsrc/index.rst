@@ -11,7 +11,7 @@ Charging Infrastructure Simulation Suite
 
 This python package simulates the charging infrastructure evolution of specific locations.
 To see the code or report a bug, please visit the `GitHub repository
-<https://www.github.com/Ajax23/ChargeSim>`_.
+<https://www.github.com/Ajax23/SimeMobileCity>`_.
 
 
 .. raw:: html
