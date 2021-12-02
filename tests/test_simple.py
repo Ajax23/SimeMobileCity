@@ -284,7 +284,7 @@ class UserModelCase(unittest.TestCase):
 
         # Extract data
         traj = sec.utils.load("data/traj.obj")
-        extract = traj["cs"].extract(list(range(7)), list(range(24)), [0, 1])
+        extract = traj.extract(list(range(7)), list(range(24)), [0, 1])
 
         # Plot occupancy
         G = sec.utils.load("data/munich_G.obj")
