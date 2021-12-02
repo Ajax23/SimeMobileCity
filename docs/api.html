@@ -3,14 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>API reference &#8212; SimeMobileCity 0.0.1 documentation</title>
+    <title>API reference &#8212; SimeMobileCity 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/style.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.1',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,9 +27,9 @@
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
-<script type="text/javascript" src="_static/js/jquery-1.11.0.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js "></script>
 <script type="text/javascript" src="_static/js/jquery-fix.js "></script>
-<script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
 <script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
 
   </head>
@@ -46,7 +46,7 @@
         </button>
         <a class="navbar-brand" href="index.html">
           SimeMobileCity</a>
-        <span class="navbar-text navbar-version pull-left"><b>0.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -119,22 +119,25 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.probability.P.html#simemobilecity.probability.P" title="simemobilecity.probability.P"><code class="xref py py-obj docutils literal"><span class="pre">probability.P</span></code></a>(p)</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.partition.P.html#simemobilecity.partition.P" title="simemobilecity.partition.P"><code class="xref py py-obj docutils literal"><span class="pre">partition.P</span></code></a>(p)</td>
 <td>This class defines a probability object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/simemobilecity.user.User.html#simemobilecity.user.User" title="simemobilecity.user.User"><code class="xref py py-obj docutils literal"><span class="pre">user.User</span></code></a>(p[,&nbsp;ident])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/simemobilecity.partition.T.html#simemobilecity.partition.T" title="simemobilecity.partition.T"><code class="xref py py-obj docutils literal"><span class="pre">partition.T</span></code></a>(num_nodes,&nbsp;num_users[,&nbsp;…])</td>
+<td>This class defines a trajectory object.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.user.User.html#simemobilecity.user.User" title="simemobilecity.user.User"><code class="xref py py-obj docutils literal"><span class="pre">user.User</span></code></a>(p[,&nbsp;ident])</td>
 <td>This class defines a user.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.car.Car.html#simemobilecity.car.Car" title="simemobilecity.car.Car"><code class="xref py py-obj docutils literal"><span class="pre">car.Car</span></code></a>(size[,&nbsp;ident])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/simemobilecity.car.Car.html#simemobilecity.car.Car" title="simemobilecity.car.Car"><code class="xref py py-obj docutils literal"><span class="pre">car.Car</span></code></a>(size[,&nbsp;ident])</td>
 <td>This class defines a car.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/simemobilecity.topology.Topology.html#simemobilecity.topology.Topology" title="simemobilecity.topology.Topology"><code class="xref py py-obj docutils literal"><span class="pre">topology.Topology</span></code></a>(loc[,&nbsp;is_log])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.topology.Topology.html#simemobilecity.topology.Topology" title="simemobilecity.topology.Topology"><code class="xref py py-obj docutils literal"><span class="pre">topology.Topology</span></code></a>(loc[,&nbsp;is_log])</td>
 <td>This class is a python wrapper for the osmnx package.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.poi.Poi.html#simemobilecity.poi.Poi" title="simemobilecity.poi.Poi"><code class="xref py py-obj docutils literal"><span class="pre">poi.Poi</span></code></a>(topo,&nbsp;name,&nbsp;p[,&nbsp;radius])</td>
+<tr class="row-even"><td><a class="reference internal" href="generated/simemobilecity.poi.Poi.html#simemobilecity.poi.Poi" title="simemobilecity.poi.Poi"><code class="xref py py-obj docutils literal"><span class="pre">poi.Poi</span></code></a>(topo,&nbsp;name,&nbsp;p[,&nbsp;radius])</td>
 <td>This class defines a point of interest.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="generated/simemobilecity.mc.MC.html#simemobilecity.mc.MC" title="simemobilecity.mc.MC"><code class="xref py py-obj docutils literal"><span class="pre">mc.MC</span></code></a>(topo[,&nbsp;node_p])</td>
+<tr class="row-odd"><td><a class="reference internal" href="generated/simemobilecity.mc.MC.html#simemobilecity.mc.MC" title="simemobilecity.mc.MC"><code class="xref py py-obj docutils literal"><span class="pre">mc.MC</span></code></a>(topo[,&nbsp;node_p])</td>
 <td>This class run a Monte Carlo simulation.</td>
 </tr>
 </tbody>

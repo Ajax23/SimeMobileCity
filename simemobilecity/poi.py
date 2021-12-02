@@ -5,7 +5,7 @@
 ################################################################################
 
 
-from simemobilecity.probability import P
+from simemobilecity.partition import P
 
 
 class Poi(P):

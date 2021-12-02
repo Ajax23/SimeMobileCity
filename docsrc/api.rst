@@ -14,7 +14,8 @@ Simulation
 .. autosummary::
     :toctree: generated/
 
-    probability.P
+    partition.P
+    partition.T
     user.User
     car.Car
     topology.Topology

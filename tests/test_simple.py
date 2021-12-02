@@ -90,6 +90,31 @@ class UserModelCase(unittest.TestCase):
         self.assertIsNone(sec.P({0: 1}).get_p())
 
 
+    ##############
+    # Trajectory #
+    ##############
+    def test_trajectory(self):
+        # Initialize
+        t = sec.T(2, 2, 7, 24)
+
+        # Setter
+        t.set_success(6, 23, 1, 1, 9)
+        t.set_fail(6, 23, 1, 1, "dist", 9)
+
+        # Add
+        t.add_success(6, 23, 1, 1)
+        t.add_fail(6, 23, 1, 1, "dist")
+
+        # Getter
+        self.assertEqual(t.get_success(6, 23, 1, 1), 10)
+        self.assertEqual(t.get_fail(6, 23, 1, 1, "dist"), 10)
+
+        # Extract
+        extract = t.extract(list(range(7)), list(range(24)), [0, 1])
+        self.assertEqual(extract[1]["success"], 0.5)
+        self.assertEqual(extract[1]["fail"]["dist"], 0.5)
+
+
     ########
     # User #
     ########
@@ -204,19 +229,19 @@ class UserModelCase(unittest.TestCase):
 
         # Add users
         user_shop = sec.User({ 0: 0.05,  1: 0.05,  2: 0.10,  3: 0.15,  4: 0.20,  5: 0.25,  6: 0.30,  7: 0.40,  8: 0.50,  9: 0.70, 10: 0.90, 11: 1.00,
-                             12: 1.00, 13: 0.90, 14: 0.70, 15: 0.50, 16: 0.40, 17: 0.30, 18: 0.25, 19: 0.20, 20: 0.15, 21: 0.10, 22: 0.05, 23: 0.05})
+                              12: 1.00, 13: 0.90, 14: 0.70, 15: 0.50, 16: 0.40, 17: 0.30, 18: 0.25, 19: 0.20, 20: 0.15, 21: 0.10, 22: 0.05, 23: 0.05})
         mc.add_user(user_shop, 100)
         mc_temp.add_user(sec.User(1), 1)
 
         # Run MC
-        mc.run(1, {day: 0 for day in range(7)})
-        mc.run(1, {hour: 0 for hour in range(24)})
-        mc.run(1, {day: {hour: 0 for hour in range(24)} for day in range(7)})
-        mc.run(1, 20)
+        mc.run("", 1, {day: 0 for day in range(7)}, weeks_equi=0, trials=1)
+        mc.run("", 1, {hour: 0 for hour in range(24)}, weeks_equi=0, trials=1)
+        mc.run("", 1, {day: {hour: 0 for hour in range(24)} for day in range(7)}, weeks_equi=0, trials=1)
+        mc.run("output/mc_test.obj", 1, 20, weeks_equi=0, trials=1)
 
         # Plot occupancy
         occ = mc._stations
-        data = [{"node": node, "x": G.nodes[node]["x"], "y": G.nodes[node]["y"], "capacity": data["cap"]} for node, data in occ.items()]
+        data = [{"node": node, "x": G.nodes[node]["x"], "y": G.nodes[node]["y"], "capacity": sum(data["cap"])} for node, data in occ.items()]
         df = pd.DataFrame(data)
         print(df)
 
@@ -228,9 +253,61 @@ class UserModelCase(unittest.TestCase):
         # Check errors
         self.assertIsNone(mc.add_user(sec.User(1), 1337))
         self.assertIsNone(mc.add_user(sec.User(1), 13.37))
-        self.assertIsNone(mc_temp.run(1, 1))
-        self.assertIsNone(mc.run(1, "DOTA"))
-        self.assertIsNone(mc.run(1, {0: 1}))
+        self.assertIsNone(mc_temp.run("", 1, 1))
+        self.assertIsNone(mc.run("", 1, "DOTA"))
+        self.assertIsNone(mc.run("", 1, {0: 1}))
+
+    def test_generate_trajectory(self):
+        self.skipTest("Trajectory")
+
+        # Generate test trajectory
+        name = "Munich, Bavaria, Germany"
+        G = sec.utils.load("data/munich_G.obj")
+        Gp = sec.utils.load("data/munich_Gp.obj")
+        topo = sec.Topology({"name": name, "G": G, "Gp": Gp}, is_log=False)
+
+        user_a = sec.User({ 0: 0.05,  1: 0.05,  2: 0.10,  3: 0.15,  4: 0.20,  5: 0.25,  6: 0.30,  7: 0.40,  8: 0.50,  9: 0.70, 10: 0.90, 11: 1.00,
+                           12: 1.00, 13: 0.90, 14: 0.70, 15: 0.50, 16: 0.40, 17: 0.30, 18: 0.25, 19: 0.20, 20: 0.15, 21: 0.10, 22: 0.05, 23: 0.05})
+        user_b = sec.User({11: 0.05, 10: 0.05,  9: 0.10,  8: 0.15,  7: 0.20,  6: 0.25,  5: 0.30,  4: 0.40,  3: 0.50,  2: 0.70,  1: 0.90,  0: 1.00,
+                           23: 1.00, 22: 0.90, 21: 0.70, 20: 0.50, 19: 0.40, 18: 0.30, 17: 0.25, 16: 0.20, 15: 0.15, 14: 0.10, 13: 0.05, 12: 0.05})
+
+        mc = sec.MC(topo, node_p=0.1)
+        mc.add_user(user_a, 50)
+        mc.add_user(user_b, 50)
+        mc.add_poi(sec.Poi(topo, "cafe", 0.3))
+        mc.add_poi(sec.Poi(topo, "restaurant", 0.3))
+        mc.add_poi(sec.Poi(topo, "bar", 0.3))
+        mc.run("data/traj.obj", 12, 1000)
+
+    def test_analyze(self):
+        # self.skipTest("Temporary")
+
+        # Extract data
+        traj = sec.utils.load("data/traj.obj")
+        extract = traj["cs"].extract(list(range(7)), list(range(24)), [0, 1])
+
+        # Plot occupancy
+        G = sec.utils.load("data/munich_G.obj")
+        data = [{"node": node, "x": G.nodes[node]["x"], "y": G.nodes[node]["y"], "success": data["success"], "fail_occ": data["fail"]["occ"], "fail_dist": data["fail"]["dist"]} for node, data in extract.items()]
+        df = pd.DataFrame(data)
+        print(df)
+
+        plt.figure(figsize=(6, 4))
+        sns.scatterplot(data=df, x="x", y="y", hue="success", size="success",
+            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        plt.savefig("output/ana_success.pdf", format="pdf", dpi=1000)
+
+        plt.figure(figsize=(6, 4))
+        sns.scatterplot(data=df, x="x", y="y", hue="fail_occ", size="fail_occ",
+            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        plt.savefig("output/ana_fail_occ.pdf", format="pdf", dpi=1000)
+
+        plt.figure(figsize=(6, 4))
+        sns.scatterplot(data=df, x="x", y="y", hue="fail_dist", size="fail_dist",
+            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        plt.savefig("output/ana_fail_dist.pdf", format="pdf", dpi=1000)
+
+
 
 
 if __name__ == '__main__':

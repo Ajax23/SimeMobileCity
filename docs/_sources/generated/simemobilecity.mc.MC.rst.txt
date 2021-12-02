@@ -16,8 +16,9 @@ MC
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~MC._prepare_nodes
       ~MC.add_poi
       ~MC.add_user
       ~MC.run
+      ~MC._run_helper

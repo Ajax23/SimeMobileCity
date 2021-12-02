@@ -6,9 +6,12 @@
 
 
 import sys
+import copy
 import random
 
-from simemobilecity.probability import P
+import simemobilecity.utils as utils
+
+from simemobilecity.partition import P, T
 
 
 class MC:
@@ -71,6 +74,10 @@ class MC:
         of successful and unsuccessfull attempts to reach destination.
         Poi probabilities are added to the nodes to set the probability for
         choosing certain nodes as a destination.
+
+        Nodes have a dictionary contatining a probability object, while charging
+        stations are a dictionary used for simulation to fill in the capacity
+        and compare to the maximum capacity.
         """
         # Initialize
         self._nodes = {}
@@ -79,33 +86,36 @@ class MC:
         for poi in self._pois:
             for node in poi.get_nodes():
                 if node not in self._nodes.keys():
-                    self._nodes[node] = {"p": P(p=poi.get_p())}
+                    self._nodes[node] = P(p=poi.get_p())
                 else:
                     temp_p = {}
                     for day in range(7):
                         temp_p[day] = {}
                         for hour in range(24):
-                            temp_p[day][hour] = self._nodes[node]["p"].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
-                    self._nodes[node]["p"] = P(p=temp_p)
+                            temp_p[day][hour] = self._nodes[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
+                    self._nodes[node] = P(p=temp_p)
 
         # Fill empty nodes
         for node in self._topo.get_nodes():
             if node not in self._nodes.keys():
-                self._nodes[node] = {"p": self._node_p}
-
-        # Process users
-        for node in self._nodes.keys():
-            self._nodes[node]["users"] = {u_id: {"success": 0, "fail": 0} for u_id in self._users.keys()}
+                self._nodes[node] = self._node_p
 
         # Get charging stations
         self._charge_G, self._capacity = self._topo.charging_station()
-        self._stations = {station: {"max": capacity, "cap": 0, "users": {u_id: 0 for u_id in self._users.keys()}} for station, capacity in self._capacity.items()}
+        self._stations = {station: {"max": capacity, "cap": [0 for user_id in range(len(self._users.keys()))]} for station, capacity in self._capacity.items()}
 
-    def run(self, weeks, drivers, max_dist=300):
+        # Create trajectory
+        self._traj = {}
+        self._traj["nodes"] = T(len(self._nodes.keys()), len(self._users.keys()), node_keys={node: i for i, node in enumerate(list(self._nodes.keys()))})
+        self._traj["cs"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))})
+
+    def run(self, file_out, weeks, drivers, max_dist=150, weeks_equi=4, trials=100):
         """Run Monte Carlo code.
 
         Parameters
         ----------
+        file_out : string
+            file link for output object file
         weeks : integer
             Number of weeks to simulate
         drivers : dictionary, integer
@@ -113,16 +123,16 @@ class MC:
             dictionary of hours or dictionary of days with a dictionary of hours
         max_dist : float, optional
             Maximal allowed walking distance
-
+        weeks_equi : integer
+            Number of weeks for equilibration
+        trials : integer, optional
+            Number of trials for faild user and node selections per driver
 
         Returns
         -------
         results : dictionary
             Node occupance
         """
-        # Initialize
-        progress_form = "%"+str(len(str(weeks*7)))+"i"
-
         # Process users
         if sum([x["percent"] for x in self._users.values()]) < 100:
             print("MC.run: User percentages do not add up to 100...")
@@ -148,12 +158,84 @@ class MC:
         # Process nodes
         self._prepare_nodes()
 
+        # Run equilibration
+        self._run_helper(weeks_equi, drivers, users, max_dist, trials=trials)
+
+        # Run production
+        self._run_helper(weeks, drivers, users, max_dist, trials=trials)
+
+        # Save trajectory
+        if file_out:
+            utils.save(self._traj, file_out)
+
+
+    def _run_helper(self, weeks, drivers, users, max_dist, trials):
+        """Run helper for processing weeks.
+
+        Parameters
+        ----------
+        weeks : int
+            Number of weeks to run
+        drivers : dictionary
+            Dictionary containing the number of drivers per day per hour
+        users : dictionary
+            User dictionary
+        max_dist : float, optional
+            Maximal allowed walking distance
+        trials : integer
+            Number of trials for faild user and node selections per driver
+        """
+        # Initialize
+        progress_form = "%"+str(len(str(weeks*7)))+"i"
+
         # Run through weeks
         for week in range(weeks):
             # Run through days
             for day in range(7):
                 # Run through hours
                 for hour in range(24):
+                    ################
+                    # Filling Step #
+                    ################
+                    # Run through dirvers
+                    for driver in range(drivers[day][hour]):
+                        # Choose random user
+                        user_id = random.choice(users)
+                        user = self._users[user_id]["user"]
+                        rand = random.uniform(0, 1)
+                        # User MC step
+                        for i in range(trials):
+                            if rand <= user.get_p_hour(day, hour):
+                                # Choose random node
+                                node = random.choice(list(self._nodes.keys()))
+                                rand = random.uniform(0, 1)
+                                # Poi MC step
+                                for j in range(trials):
+                                    if rand <= self._nodes[node].get_p_hour(day, hour):
+                                        # Determine nearest charging station and calculate distance
+                                        dest, dist = self._topo.dist_poi(node, self._charge_G)
+                                        # Process success
+                                        is_success = True
+                                        ## Check occupancy and fail move if necessary with reason occupancy
+                                        if is_success and sum(self._stations[dest]["cap"])==self._stations[dest]["max"]:
+                                            self._traj["nodes"].add_fail(day, hour, node, user_id, "occ")
+                                            self._traj["cs"].add_fail(day, hour, dest, user_id, "occ")
+                                            is_success = False
+                                        ## Check distance and fail move if necessary with reason distance
+                                        if is_success and dist > max_dist:
+                                            self._traj["nodes"].add_fail(day, hour, node, user_id, "dist")
+                                            self._traj["cs"].add_fail(day, hour, dest, user_id, "dist")
+                                            is_success = False
+                                        ## Add session if successful
+                                        if is_success:
+                                            self._traj["nodes"].add_success(day, hour, node, user_id)
+                                            self._traj["cs"].add_success(day, hour, dest, user_id)
+                                            self._stations[dest]["cap"][user_id] += 1
+                                        # End node trials if successful
+                                        break
+                                # End user trials if successful
+                                break
+
                     ##############
                     # Empty Step #
                     ##############
@@ -165,45 +247,11 @@ class MC:
                             user = self._users[user_id]["user"]
                             p_leave = 1-user.get_p_hour(day, hour)
                             # Run through users parking
-                            for i in range(station["users"][user_id]):
+                            for i in range(station["cap"][user_id]):
                                 rand = random.uniform(0, 1)
                                 # Check if user leaves
                                 if rand < p_leave:
-                                    station["cap"] -= 1
-                                    station["users"][user_id] -= 1
-
-                    ################
-                    # Filling Step #
-                    ################
-                    # Run through dirvers
-                    for driver in range(drivers[day][hour]):
-                        # Choose random user
-                        user_id = random.choice(users)
-                        user = self._users[user_id]["user"]
-                        rand = random.uniform(0, 1)
-                        # User MC step
-                        if rand <= user.get_p_hour(day, hour):
-                            # Choose random node
-                            node = random.choice(list(self._nodes.keys()))
-                            rand = random.uniform(0, 1)
-                            # Poi MC step
-                            if rand <= self._nodes[node]["p"].get_p_hour(day, hour):
-                                # Calculate distance to nearest charging station
-                                dest, dist = self._topo.dist_poi(node, self._charge_G)
-                                # Check success
-                                is_success = 0
-                                if dist>max_dist:
-                                    is_success += 1
-                                if self._stations[dest]["cap"]==self._stations[dest]["max"]:
-                                    is_success += 1
-                                is_success = is_success==0
-                                # Process success or failure
-                                if is_success:
-                                    self._stations[dest]["cap"] += 1
-                                    self._stations[dest]["users"][user_id] += 1
-                                    self._nodes[node]["users"][user_id]["success"] += 1
-                                else:
-                                    self._nodes[node]["users"][user_id]["fail"] += 1
+                                    station["cap"][user_id] -= 1
 
                 # Progress
                 sys.stdout.write("Finished day "+progress_form%(week*7+day+1)+"/"+progress_form%(weeks*7)+"...\r")
