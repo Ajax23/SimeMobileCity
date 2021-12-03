@@ -202,7 +202,7 @@ class UserModelCase(unittest.TestCase):
 
         self.assertEqual(poi.get_topo(), topo)
         self.assertEqual(poi.get_tags(), {"amenity": ["cafe"]})
-        self.assertEqual(list(poi.get_G()), G)
+        self.assertEqual(poi.get_G(), G)
         # self.assertEqual(poi.get_nodes()[0], 3571318797)
 
 
