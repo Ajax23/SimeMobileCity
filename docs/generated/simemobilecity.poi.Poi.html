@@ -110,7 +110,7 @@
 <h1>Poi<a class="headerlink" href="#poi" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="simemobilecity.poi.Poi">
-<em class="property">class </em><code class="descclassname">simemobilecity.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>name</em>, <em>p</em>, <em>radius=200</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.poi.Poi" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">simemobilecity.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>tags</em>, <em>p</em>, <em>radius=200</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.poi.Poi" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a point of interest.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -120,8 +120,8 @@
 <dt><strong>topo</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Topology</span></dt>
 <dd><p class="first last">Topology object</p>
 </dd>
-<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">Name of point of interest</p>
+<dt><strong>tags</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Dictionary</span></dt>
+<dd><p class="first last">OSM tags in format - tags={“amenity”: [“cafe”]}</p>
 </dd>
 <dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float</span></dt>
 <dd><p class="first last">Probability each hour each weekday, either a float for the same
@@ -147,8 +147,8 @@ different days, or a dictionary of days each with a dictionary of hours</p>
 <tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_G.html#simemobilecity.poi.Poi.get_G" title="simemobilecity.poi.Poi.get_G"><code class="xref py py-obj docutils literal"><span class="pre">get_G</span></code></a>()</td>
 <td>Get OSM graph object.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_name.html#simemobilecity.poi.Poi.get_name" title="simemobilecity.poi.Poi.get_name"><code class="xref py py-obj docutils literal"><span class="pre">get_name</span></code></a>()</td>
-<td>Return poi name.</td>
+<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_tags.html#simemobilecity.poi.Poi.get_tags" title="simemobilecity.poi.Poi.get_tags"><code class="xref py py-obj docutils literal"><span class="pre">get_tags</span></code></a>()</td>
+<td>Return OSM tags.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_nodes.html#simemobilecity.poi.Poi.get_nodes" title="simemobilecity.poi.Poi.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
 <td>Get list of nodes of graph.</td>

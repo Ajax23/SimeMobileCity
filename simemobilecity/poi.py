@@ -15,8 +15,8 @@ class Poi(P):
     ----------
     topo : Topology
         Topology object
-    name : string
-        Name of point of interest
+    tags : Dictionary
+        OSM tags in format - tags={"amenity": ["cafe"]}
     p : dictionary, float
         Probability each hour each weekday, either a float for the same
         probability each hour, dictionary of hours for same hour distribution
@@ -25,16 +25,16 @@ class Poi(P):
     radius : float, optional
         Distance of nodes from poi center in m
     """
-    def __init__(self, topo, name, p, radius=200):
+    def __init__(self, topo, tags, p, radius=200):
         # Call super class
         super(Poi, self).__init__(p)
 
         # Process input
         self._topo = topo
-        self._name = name
+        self._tags = tags
 
         # Load graph
-        self._G = topo.poi(name, radius=radius)
+        self._G = topo.poi(tags, radius=radius)
         self._nodes = list(self._G)
 
 
@@ -51,15 +51,15 @@ class Poi(P):
         """
         return self._topo
 
-    def get_name(self):
-        """Return poi name.
+    def get_tags(self):
+        """Return OSM tags.
 
         Returns
         -------
-        val : string
-            Poi name
+        val : dictionary
+            Poi tags
         """
-        return self._name
+        return self._tags
 
     def get_G(self):
         """Get OSM graph object.

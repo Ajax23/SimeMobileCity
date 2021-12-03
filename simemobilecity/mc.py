@@ -6,7 +6,6 @@
 
 
 import sys
-import copy
 import random
 
 import simemobilecity.utils as utils

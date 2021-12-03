@@ -5,9 +5,9 @@
     </div>
     <div class=col-md-9 content>
 
-Poi\.get\_name
+Poi\.get\_tags
 ==============
 
 .. currentmodule:: simemobilecity.poi
 
-.. automethod:: Poi.get_name
+.. automethod:: Poi.get_tags

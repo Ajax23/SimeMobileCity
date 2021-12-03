@@ -89,13 +89,13 @@ class Topology:
         # Get shortest route
         return dest, self.dist(orig, dest, is_route=False)
 
-    def poi(self, name, radius=0, is_gdf=False):
+    def poi(self, tags, radius=0, is_gdf=False):
         """Get nodes for given point of interest.
 
         Parameters
         ----------
-        name : string
-            OSM name for point of interest
+        tags : Dictionary
+            OSM tags in format - tags={"amenity": ["cafe"]}
         radius : float, optional
             Distance of pois from center in m
         is_gdf : bool, optional
@@ -109,7 +109,7 @@ class Topology:
             GDF object
         """
         # Get pois geometry
-        gdf = ox.geometries_from_place(self._loc["name"], tags={"amenity" : [name]})
+        gdf = ox.geometries_from_place(self._loc["name"], tags=tags)
 
         # Find nearest nodes in graph
         pos = gdf["geometry"]["node"]
@@ -134,12 +134,12 @@ class Topology:
         else:
             return P
 
-    def charging_station(self, name="charging_station"):
+    def charging_station(self, tags={"amenity": ["charging_station"]}):
         """Create charging station graph and capacity dictionaries.
 
         Parameters
         ----------
-        name : string, optional
+        tags : string, optional
             Charging station tag name
 
         Returns
@@ -150,7 +150,7 @@ class Topology:
             Charging stations capacities
         """
         # Get chargin stations
-        gdf = ox.geometries_from_place(self._loc["name"], tags={"amenity" : [name]})
+        gdf = ox.geometries_from_place(self._loc["name"], tags=tags)
 
         # Find nearest nodes in graph
         pos = gdf["geometry"]

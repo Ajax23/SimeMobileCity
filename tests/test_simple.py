@@ -164,8 +164,8 @@ class UserModelCase(unittest.TestCase):
         self.assertEqual(topo.get_nodes()[0], 128236)
 
         # Poi
-        P, _ = topo.poi("cafe", radius=0, is_gdf=True)
-        P = topo.poi("cafe", radius=300)
+        P, _ = topo.poi({"amenity": ["cafe"]}, radius=0, is_gdf=True)
+        P = topo.poi({"amenity": ["cafe"]}, radius=300)
 
         # Charging stations
         C, capacity = topo.charging_station()
@@ -198,11 +198,11 @@ class UserModelCase(unittest.TestCase):
         G = sec.utils.load("data/munich_G.obj")
         Gp = sec.utils.load("data/munich_Gp.obj")
         topo = sec.Topology({"name": name, "G": G, "Gp": Gp})
-        poi = sec.Poi(topo, "cafe", 1)
+        poi = sec.Poi(topo, {"amenity": ["cafe"]}, 1)
 
         self.assertEqual(poi.get_topo(), topo)
-        self.assertEqual(poi.get_name(), "cafe")
-        # self.assertEqual(list(poi.get_G())[0], 3571318797)
+        self.assertEqual(poi.get_tags(), {"amenity": ["cafe"]})
+        self.assertEqual(list(poi.get_G()), G)
         # self.assertEqual(poi.get_nodes()[0], 3571318797)
 
 
@@ -223,9 +223,9 @@ class UserModelCase(unittest.TestCase):
         mc_temp = sec.MC(topo, node_p=0.1)
 
         # Add pois
-        mc.add_poi(sec.Poi(topo, "cafe", 0.3))
-        mc.add_poi(sec.Poi(topo, "restaurant", 0.3))
-        mc.add_poi(sec.Poi(topo, "bar", 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["cafe"]}, 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["restaurant"]}, 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["bar"]}, 0.3))
 
         # Add users
         user_shop = sec.User({ 0: 0.05,  1: 0.05,  2: 0.10,  3: 0.15,  4: 0.20,  5: 0.25,  6: 0.30,  7: 0.40,  8: 0.50,  9: 0.70, 10: 0.90, 11: 1.00,
@@ -274,9 +274,9 @@ class UserModelCase(unittest.TestCase):
         mc = sec.MC(topo, node_p=0.1)
         mc.add_user(user_a, 50)
         mc.add_user(user_b, 50)
-        mc.add_poi(sec.Poi(topo, "cafe", 0.3))
-        mc.add_poi(sec.Poi(topo, "restaurant", 0.3))
-        mc.add_poi(sec.Poi(topo, "bar", 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["cafe"]}, 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["restaurant"]}, 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["bar"]}, 0.3))
         mc.run("data/traj.obj", 12, 1000)
 
     def test_analyze(self):
@@ -306,8 +306,6 @@ class UserModelCase(unittest.TestCase):
         sns.scatterplot(data=df, x="x", y="y", hue="fail_dist", size="fail_dist",
             palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
         plt.savefig("output/ana_fail_dist.pdf", format="pdf", dpi=1000)
-
-
 
 
 if __name__ == '__main__':

@@ -110,15 +110,15 @@
 <h1>Topology.poi<a class="headerlink" href="#topology-poi" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="simemobilecity.topology.Topology.poi">
-<code class="descclassname">Topology.</code><code class="descname">poi</code><span class="sig-paren">(</span><em>name</em>, <em>radius=0</em>, <em>is_gdf=False</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.topology.Topology.poi" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Topology.</code><code class="descname">poi</code><span class="sig-paren">(</span><em>tags</em>, <em>radius=0</em>, <em>is_gdf=False</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.topology.Topology.poi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get nodes for given point of interest.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
-<dt><strong>name</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
-<dd><p class="first last">OSM name for point of interest</p>
+<dt><strong>tags</strong> <span class="classifier-delimiter">:</span> <span class="classifier">Dictionary</span></dt>
+<dd><p class="first last">OSM tags in format - tags={“amenity”: [“cafe”]}</p>
 </dd>
 <dt><strong>radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
 <dd><p class="first last">Distance of pois from center in m</p>

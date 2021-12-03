@@ -16,9 +16,9 @@ Poi
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~Poi.get_G
-      ~Poi.get_name
+      ~Poi.get_tags
       ~Poi.get_nodes
       ~Poi.get_p
       ~Poi.get_p_day
