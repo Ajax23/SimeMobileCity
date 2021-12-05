@@ -263,7 +263,7 @@ class T:
         """
         self._t[self._index(day, hour, node, user_id, fail)] += 1
 
-    def extract(self, days, hours, users):
+    def extract(self, days, hours, users, is_norm=True):
         """Extract data from trajectory for the given days hours and user types.
         The data for the different values will be combined to one node list with
         percentages for success and failure. The latter will be divided into the
@@ -277,6 +277,8 @@ class T:
             List of hour ids to combine
         users : list
             List of user ids to combine
+        is_norm : bool
+            True to noromalize results
 
         Returns
         -------
@@ -301,10 +303,11 @@ class T:
                             nodes[node]["fail"][fail] += self.get_fail(day, hour, node, user, fail)
 
             # Calculate percentages
-            normalize = nodes[node]["success"]+sum([nodes[node]["fail"][fail] for fail in self._failures])
-            nodes[node]["success"] = nodes[node]["success"]/normalize if normalize else 0
-            for fail in self._failures:
-                nodes[node]["fail"][fail] = nodes[node]["fail"][fail]/normalize if normalize else 0
+            if is_norm:
+                normalize = nodes[node]["success"]+sum([nodes[node]["fail"][fail] for fail in self._failures])
+                nodes[node]["success"] = nodes[node]["success"]/normalize if normalize else 0
+                for fail in self._failures:
+                    nodes[node]["fail"][fail] = nodes[node]["fail"][fail]/normalize if normalize else 0
 
         # Return nodes
         return nodes
