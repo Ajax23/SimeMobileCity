@@ -5,6 +5,9 @@
 ################################################################################
 
 
+import pandas as pd
+
+
 class P:
     """This class defines a probability object.
 
@@ -19,6 +22,21 @@ class P:
     def __init__(self, p):
         # Process input
         self.set_p(p)
+
+
+    ##################
+    # Representation #
+    ##################
+    def __repr__(self):
+        """Create a pandas table of the probability data.
+
+        Returns
+        -------
+        repr : String
+            Pandas data frame of the probability
+        """
+        return pd.DataFrame(self._p).to_string()
+
 
 
     ##################

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>P &#8212; SimeMobileCity 0.1.0 documentation</title>
+    <title>User.__repr__ &#8212; SimeMobileCity 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">P</a></li>
+<li><a class="reference internal" href="#">User.__repr__</a></li>
 </ul>
 </ul>
 </li>
@@ -106,55 +106,22 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="p">
-<h1>P<a class="headerlink" href="#p" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="simemobilecity.partition.P">
-<em class="property">class </em><code class="descclassname">simemobilecity.partition.</code><code class="descname">P</code><span class="sig-paren">(</span><em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.partition.P" title="Permalink to this definition">¶</a></dt>
-<dd><p>This class defines a probability object.</p>
+<div class=col-md-9 content><div class="section" id="user-repr">
+<h1>User.__repr__<a class="headerlink" href="#user-repr" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="simemobilecity.user.User.__repr__">
+<code class="descclassname">User.</code><code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.user.User.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a pandas table of the probability data.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float</span></dt>
-<dd><p class="first last">Probability each hour each weekday, either a float for the same
-probability each hour, dictionary of hours for same hour distribution
-for all days, a dictionary of days for the same hour probability for
-different days, or a dictionary of days each with a dictionary of hours</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>repr</strong> <span class="classifier-delimiter">:</span> <span class="classifier">String</span></dt>
+<dd><p class="first last">Pandas data frame of the probability</p>
 </dd>
 </dl>
 </td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.P.__repr__.html#simemobilecity.partition.P.__repr__" title="simemobilecity.partition.P.__repr__"><code class="xref py py-obj docutils literal"><span class="pre">__repr__</span></code></a>()</td>
-<td>Create a pandas table of the probability data.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.P.get_p.html#simemobilecity.partition.P.get_p" title="simemobilecity.partition.P.get_p"><code class="xref py py-obj docutils literal"><span class="pre">get_p</span></code></a>()</td>
-<td>Return complete probability dictionary.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.P.get_p_day.html#simemobilecity.partition.P.get_p_day" title="simemobilecity.partition.P.get_p_day"><code class="xref py py-obj docutils literal"><span class="pre">get_p_day</span></code></a>(day)</td>
-<td>Return probability for a day.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.P.get_p_hour.html#simemobilecity.partition.P.get_p_hour" title="simemobilecity.partition.P.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
-<td>Return probability for an hour.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.P.set_p.html#simemobilecity.partition.P.set_p" title="simemobilecity.partition.P.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(p)</td>
-<td>Set complete probability dictionary.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.P.set_p_day.html#simemobilecity.partition.P.set_p_day" title="simemobilecity.partition.P.set_p_day"><code class="xref py py-obj docutils literal"><span class="pre">set_p_day</span></code></a>(day,&nbsp;val)</td>
-<td>Set probability for a day.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.P.set_p_hour.html#simemobilecity.partition.P.set_p_hour" title="simemobilecity.partition.P.set_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">set_p_hour</span></code></a>(day,&nbsp;hour,&nbsp;val)</td>
-<td>Set probability for an hour.</td>
 </tr>
 </tbody>
 </table>

@@ -16,7 +16,8 @@ P
    .. rubric:: Methods
 
    .. autosummary::
-   
+
+      ~P.__repr__
       ~P.get_p
       ~P.get_p_day
       ~P.get_p_hour

@@ -17,6 +17,7 @@ Poi
 
    .. autosummary::
 
+      ~Poi.__repr__
       ~Poi.get_G
       ~Poi.get_tags
       ~Poi.get_nodes

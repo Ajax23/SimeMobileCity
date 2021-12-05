@@ -89,6 +89,8 @@ class UserModelCase(unittest.TestCase):
         self.assertIsNone(sec.P("DOTA").get_p())
         self.assertIsNone(sec.P({0: 1}).get_p())
 
+        print(p)
+
 
     ##############
     # Trajectory #
