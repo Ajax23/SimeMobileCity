@@ -226,9 +226,9 @@ class UserModelCase(unittest.TestCase):
         mc_temp = sec.MC(topo, node_p=0.1)
 
         # Add pois
-        mc.add_poi(sec.Poi(topo, {"amenity": ["cafe"]}, 0.3))
-        mc.add_poi(sec.Poi(topo, {"amenity": ["restaurant"]}, 0.3))
-        mc.add_poi(sec.Poi(topo, {"amenity": ["bar"]}, 0.3))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["cafe"]}, 0.4))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["restaurant"]}, 0.4))
+        mc.add_poi(sec.Poi(topo, {"amenity": ["bar"]}, 0.4))
 
         # Add users
         user_shop = sec.User({ 0: 0.05,  1: 0.05,  2: 0.10,  3: 0.15,  4: 0.20,  5: 0.25,  6: 0.30,  7: 0.40,  8: 0.50,  9: 0.70, 10: 0.90, 11: 1.00,
@@ -239,7 +239,7 @@ class UserModelCase(unittest.TestCase):
         # Run MC
         mc.run("", 1, {day: 0 for day in range(7)}, weeks_equi=0, trials=1)
         mc.run("", 1, {hour: 0 for hour in range(24)}, weeks_equi=0, trials=1)
-        mc.run("", 1, {day: {hour: 0 for hour in range(24)} for day in range(7)}, weeks_equi=0, trials=1)
+        mc.run("", 1, {day: {hour: 0 for hour in range(24)} for day in range(7)}, weeks_equi=1, trials=1)
         mc.run("output/mc_test.obj", 1, 20, weeks_equi=0, trials=1)
 
         # Plot occupancy

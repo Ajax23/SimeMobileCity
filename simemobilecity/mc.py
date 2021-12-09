@@ -28,13 +28,17 @@ class MC:
         for same hour distribution for all days, a dictionary of days for the
         same hour probability for different days, or a dictionary of days each
         with a dictionary of hours
+    is_normalize: bool, optional
+        True to normalize POI dicts with maximum value :math:`\\rightarrow`
+        largest value is equal to one
     """
-    def __init__(self, topo, node_p=0.1):
+    def __init__(self, topo, node_p=0.1, is_normalize=False):
         # Initialize
         self._topo = topo
         self._node_p = P(node_p)
         self._users = {}
         self._pois = []
+        self._is_normalize = is_normalize
 
     def add_user(self, user, percentage):
         """Add User to simulation system.
@@ -77,11 +81,18 @@ class MC:
         Nodes have a dictionary contatining a probability object, while charging
         stations are a dictionary used for simulation to fill in the capacity
         and compare to the maximum capacity.
+
+        Parameters
+        ----------
+        is_normalize : bool
+            True to normalize POI dicts with maximum value :math:`\\rightarrow`
+            largest value is equal to one
         """
         # Initialize
         self._nodes = {}
 
         # Process poi
+        max_p = 0
         for poi in self._pois:
             for node in poi.get_nodes():
                 if node not in self._nodes.keys():
@@ -92,12 +103,18 @@ class MC:
                         temp_p[day] = {}
                         for hour in range(24):
                             temp_p[day][hour] = self._nodes[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
+                            max_p = temp_p[day][hour] if temp_p[day][hour]>max_p else max_p
                     self._nodes[node] = P(p=temp_p)
 
         # Fill empty nodes
         for node in self._topo.get_nodes():
             if node not in self._nodes.keys():
                 self._nodes[node] = self._node_p
+
+        # Normalize matrix
+        if self._is_normalize:
+            for node, p in self._nodes.items():
+                p = P(p={day: {hour: p.get_p_hour(day, hour)/max_p for hour in range(24)} for day in range(7)})
 
         # Get charging stations
         self._charge_G, self._capacity = self._topo.charging_station()
@@ -158,17 +175,17 @@ class MC:
         self._prepare_nodes()
 
         # Run equilibration
-        self._run_helper(weeks_equi, drivers, users, max_dist, trials=trials)
+        self._run_helper(weeks_equi, drivers, users, max_dist, trials, is_equi=True)
 
         # Run production
-        self._run_helper(weeks, drivers, users, max_dist, trials=trials)
+        self._run_helper(weeks, drivers, users, max_dist, trials, is_equi=False)
 
         # Save trajectory
         if file_out:
             utils.save(self._traj, file_out)
 
 
-    def _run_helper(self, weeks, drivers, users, max_dist, trials):
+    def _run_helper(self, weeks, drivers, users, max_dist, trials, is_equi):
         """Run helper for processing weeks.
 
         Parameters
@@ -183,6 +200,8 @@ class MC:
             Maximal allowed walking distance
         trials : integer
             Number of trials for faild user and node selections per driver
+        is_equi : bool
+            True for equilibration run to not add instances to trajectory
         """
         # Initialize
         progress_form = "%"+str(len(str(weeks*7)))+"i"
@@ -217,18 +236,21 @@ class MC:
                                         is_success = True
                                         ## Check occupancy and fail move if necessary with reason occupancy
                                         if is_success and sum(self._stations[dest]["cap"])==self._stations[dest]["max"]:
-                                            self._traj["nodes"].add_fail(day, hour, node, user_id, "occ")
-                                            self._traj["cs"].add_fail(day, hour, dest, user_id, "occ")
+                                            if not is_equi:
+                                                self._traj["nodes"].add_fail(day, hour, node, user_id, "occ")
+                                                self._traj["cs"].add_fail(day, hour, dest, user_id, "occ")
                                             is_success = False
                                         ## Check distance and fail move if necessary with reason distance
                                         if is_success and dist > max_dist:
-                                            self._traj["nodes"].add_fail(day, hour, node, user_id, "dist")
-                                            self._traj["cs"].add_fail(day, hour, dest, user_id, "dist")
+                                            if not is_equi:
+                                                self._traj["nodes"].add_fail(day, hour, node, user_id, "dist")
+                                                self._traj["cs"].add_fail(day, hour, dest, user_id, "dist")
                                             is_success = False
                                         ## Add session if successful
                                         if is_success:
-                                            self._traj["nodes"].add_success(day, hour, node, user_id)
-                                            self._traj["cs"].add_success(day, hour, dest, user_id)
+                                            if not is_equi:
+                                                self._traj["nodes"].add_success(day, hour, node, user_id)
+                                                self._traj["cs"].add_success(day, hour, dest, user_id)
                                             self._stations[dest]["cap"][user_id] += 1
                                         # End node trials if successful
                                         break
