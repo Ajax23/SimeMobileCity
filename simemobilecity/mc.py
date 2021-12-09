@@ -114,7 +114,7 @@ class MC:
         # Normalize matrix
         if self._is_normalize:
             for node, p in self._nodes.items():
-                p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p for hour in range(24)} for day in range(7)})
+                p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p if p.get_p_hour(day, hour)>0 and max_p>0 else 0 for hour in range(24)} for day in range(7)})
 
         # Get charging stations
         self._charge_G, self._capacity = self._topo.charging_station()
