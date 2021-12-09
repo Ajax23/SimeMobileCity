@@ -110,7 +110,7 @@
 <h1>T.extract<a class="headerlink" href="#t-extract" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="simemobilecity.partition.T.extract">
-<code class="descclassname">T.</code><code class="descname">extract</code><span class="sig-paren">(</span><em>days</em>, <em>hours</em>, <em>users</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.partition.T.extract" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">T.</code><code class="descname">extract</code><span class="sig-paren">(</span><em>days</em>, <em>hours</em>, <em>users</em>, <em>is_norm=True</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.partition.T.extract" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract data from trajectory for the given days hours and user types.
 The data for the different values will be combined to one node list with
 percentages for success and failure. The latter will be divided into the
@@ -128,6 +128,9 @@ different failure types.</p>
 </dd>
 <dt><strong>users</strong> <span class="classifier-delimiter">:</span> <span class="classifier">list</span></dt>
 <dd><p class="first last">List of user ids to combine</p>
+</dd>
+<dt><strong>is_norm</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">True to noromalize results</p>
 </dd>
 </dl>
 </td>

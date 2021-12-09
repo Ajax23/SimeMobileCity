@@ -110,7 +110,7 @@
 <h1>MC._run_helper<a class="headerlink" href="#mc-run-helper" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="simemobilecity.mc.MC._run_helper">
-<code class="descclassname">MC.</code><code class="descname">_run_helper</code><span class="sig-paren">(</span><em>weeks</em>, <em>drivers</em>, <em>users</em>, <em>max_dist</em>, <em>trials</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.mc.MC._run_helper" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">MC.</code><code class="descname">_run_helper</code><span class="sig-paren">(</span><em>weeks</em>, <em>drivers</em>, <em>users</em>, <em>max_dist</em>, <em>trials</em>, <em>is_equi</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.mc.MC._run_helper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run helper for processing weeks.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -131,6 +131,9 @@
 </dd>
 <dt><strong>trials</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
 <dd><p class="first last">Number of trials for faild user and node selections per driver</p>
+</dd>
+<dt><strong>is_equi</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
+<dd><p class="first last">True for equilibration run to not add instances to trajectory</p>
 </dd>
 </dl>
 </td>
