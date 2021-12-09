@@ -222,7 +222,7 @@ class UserModelCase(unittest.TestCase):
         topo = sec.Topology({"name": name, "G": G, "Gp": Gp}, is_log=False)
 
         # Initialize
-        mc = sec.MC(topo, node_p=0.1)
+        mc = sec.MC(topo, node_p=0.1, is_normalize=True)
         mc_temp = sec.MC(topo, node_p=0.1)
 
         # Add pois

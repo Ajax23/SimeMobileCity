@@ -32,7 +32,7 @@ class MC:
         True to normalize POI dicts with maximum value :math:`\\rightarrow`
         largest value is equal to one
     """
-    def __init__(self, topo, node_p=0.1, is_normalize=False):
+    def __init__(self, topo, node_p=0.1, is_normalize=True):
         # Initialize
         self._topo = topo
         self._node_p = P(node_p)
@@ -114,7 +114,7 @@ class MC:
         # Normalize matrix
         if self._is_normalize:
             for node, p in self._nodes.items():
-                p = P(p={day: {hour: p.get_p_hour(day, hour)/max_p for hour in range(24)} for day in range(7)})
+                p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p for hour in range(24)} for day in range(7)})
 
         # Get charging stations
         self._charge_G, self._capacity = self._topo.charging_station()
