@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>MC._run_helper &#8212; SimeMobileCity 0.1.0 documentation</title>
+    <title>Poi.set_max_dist &#8212; SimeMobileCity 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/style.css" type="text/css" />
@@ -75,7 +75,7 @@
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">MC._run_helper</a></li>
+<li><a class="reference internal" href="#">Poi.set_max_dist</a></li>
 </ul>
 </ul>
 </li>
@@ -106,31 +106,19 @@
     <div class="body col-md-12 content" role="main">
       
   </div>
-<div class=col-md-9 content><div class="section" id="mc-run-helper">
-<h1>MC._run_helper<a class="headerlink" href="#mc-run-helper" title="Permalink to this headline">¶</a></h1>
+<div class=col-md-9 content><div class="section" id="poi-set-max-dist">
+<h1>Poi.set_max_dist<a class="headerlink" href="#poi-set-max-dist" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
-<dt id="simemobilecity.mc.MC._run_helper">
-<code class="descclassname">MC.</code><code class="descname">_run_helper</code><span class="sig-paren">(</span><em>weeks</em>, <em>drivers</em>, <em>users</em>, <em>trials</em>, <em>is_equi</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.mc.MC._run_helper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run helper for processing weeks.</p>
+<dt id="simemobilecity.poi.Poi.set_max_dist">
+<code class="descclassname">Poi.</code><code class="descname">set_max_dist</code><span class="sig-paren">(</span><em>val</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.poi.Poi.set_max_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set maximal allowed distance from charging station to POI.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>weeks</strong> <span class="classifier-delimiter">:</span> <span class="classifier">int</span></dt>
-<dd><p class="first last">Number of weeks to run</p>
-</dd>
-<dt><strong>drivers</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">Dictionary containing the number of drivers per day per hour</p>
-</dd>
-<dt><strong>users</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">User dictionary</p>
-</dd>
-<dt><strong>trials</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
-<dd><p class="first last">Number of trials for faild user and node selections per driver</p>
-</dd>
-<dt><strong>is_equi</strong> <span class="classifier-delimiter">:</span> <span class="classifier">bool</span></dt>
-<dd><p class="first last">True for equilibration run to not add instances to trajectory</p>
+<dt><strong>val</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float</span></dt>
+<dd><p class="first last">Maximal allowed distance from charging station poi in m</p>
 </dd>
 </dl>
 </td>

@@ -110,7 +110,7 @@
 <h1>Poi<a class="headerlink" href="#poi" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="simemobilecity.poi.Poi">
-<em class="property">class </em><code class="descclassname">simemobilecity.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>tags</em>, <em>p</em>, <em>radius=200</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.poi.Poi" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">simemobilecity.poi.</code><code class="descname">Poi</code><span class="sig-paren">(</span><em>topo</em>, <em>tags</em>, <em>p</em>, <em>radius=200</em>, <em>max_dist=500</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.poi.Poi" title="Permalink to this definition">¶</a></dt>
 <dd><p>This class defines a point of interest.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -131,6 +131,9 @@ different days, or a dictionary of days each with a dictionary of hours</p>
 </dd>
 <dt><strong>radius</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
 <dd><p class="first last">Distance of nodes from poi center in m</p>
+</dd>
+<dt><strong>max_dist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Maximal allowed distance from charging station poi in m</p>
 </dd>
 </dl>
 </td>
@@ -153,20 +156,26 @@ different days, or a dictionary of days each with a dictionary of hours</p>
 <tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_tags.html#simemobilecity.poi.Poi.get_tags" title="simemobilecity.poi.Poi.get_tags"><code class="xref py py-obj docutils literal"><span class="pre">get_tags</span></code></a>()</td>
 <td>Return OSM tags.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_nodes.html#simemobilecity.poi.Poi.get_nodes" title="simemobilecity.poi.Poi.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_max_dist.html#simemobilecity.poi.Poi.get_max_dist" title="simemobilecity.poi.Poi.get_max_dist"><code class="xref py py-obj docutils literal"><span class="pre">get_max_dist</span></code></a>()</td>
+<td>Get maximal allowed distance from charging station to POI.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_nodes.html#simemobilecity.poi.Poi.get_nodes" title="simemobilecity.poi.Poi.get_nodes"><code class="xref py py-obj docutils literal"><span class="pre">get_nodes</span></code></a>()</td>
 <td>Get list of nodes of graph.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_p.html#simemobilecity.poi.Poi.get_p" title="simemobilecity.poi.Poi.get_p"><code class="xref py py-obj docutils literal"><span class="pre">get_p</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_p.html#simemobilecity.poi.Poi.get_p" title="simemobilecity.poi.Poi.get_p"><code class="xref py py-obj docutils literal"><span class="pre">get_p</span></code></a>()</td>
 <td>Return complete probability dictionary.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_p_day.html#simemobilecity.poi.Poi.get_p_day" title="simemobilecity.poi.Poi.get_p_day"><code class="xref py py-obj docutils literal"><span class="pre">get_p_day</span></code></a>(day)</td>
+<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_p_day.html#simemobilecity.poi.Poi.get_p_day" title="simemobilecity.poi.Poi.get_p_day"><code class="xref py py-obj docutils literal"><span class="pre">get_p_day</span></code></a>(day)</td>
 <td>Return probability for a day.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_p_hour.html#simemobilecity.poi.Poi.get_p_hour" title="simemobilecity.poi.Poi.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
+<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_p_hour.html#simemobilecity.poi.Poi.get_p_hour" title="simemobilecity.poi.Poi.get_p_hour"><code class="xref py py-obj docutils literal"><span class="pre">get_p_hour</span></code></a>(day,&nbsp;hour)</td>
 <td>Return probability for an hour.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_topo.html#simemobilecity.poi.Poi.get_topo" title="simemobilecity.poi.Poi.get_topo"><code class="xref py py-obj docutils literal"><span class="pre">get_topo</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.get_topo.html#simemobilecity.poi.Poi.get_topo" title="simemobilecity.poi.Poi.get_topo"><code class="xref py py-obj docutils literal"><span class="pre">get_topo</span></code></a>()</td>
 <td>Return Topology object.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="simemobilecity.poi.Poi.set_max_dist.html#simemobilecity.poi.Poi.set_max_dist" title="simemobilecity.poi.Poi.set_max_dist"><code class="xref py py-obj docutils literal"><span class="pre">set_max_dist</span></code></a>(val)</td>
+<td>Set maximal allowed distance from charging station to POI.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="simemobilecity.poi.Poi.set_p.html#simemobilecity.poi.Poi.set_p" title="simemobilecity.poi.Poi.set_p"><code class="xref py py-obj docutils literal"><span class="pre">set_p</span></code></a>(p)</td>
 <td>Set complete probability dictionary.</td>

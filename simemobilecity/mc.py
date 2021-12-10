@@ -28,16 +28,20 @@ class MC:
         for same hour distribution for all days, a dictionary of days for the
         same hour probability for different days, or a dictionary of days each
         with a dictionary of hours
+    max_dist : float, optional
+        Maximal allowed walking distance from charging station to node in m, for
+        nodes not covered by given POI objects
     is_normalize: bool, optional
         True to normalize POI dicts with maximum value :math:`\\rightarrow`
         largest value is equal to one
     """
-    def __init__(self, topo, node_p=0.1, is_normalize=True):
+    def __init__(self, topo, node_p=0.1, max_dist=500, is_normalize=True):
         # Initialize
         self._topo = topo
         self._node_p = P(node_p)
         self._users = {}
         self._pois = []
+        self._max_dist = max_dist
         self._is_normalize = is_normalize
 
     def add_user(self, user, percentage):
@@ -90,6 +94,7 @@ class MC:
         """
         # Initialize
         self._nodes = {}
+        self._nodes_dist = {}
 
         # Process poi
         max_p = 0
@@ -97,7 +102,9 @@ class MC:
             for node in poi.get_nodes():
                 if node not in self._nodes.keys():
                     self._nodes[node] = P(p=poi.get_p())
+                    self._nodes_dist[node] = [poi.get_max_dist(), 1]
                 else:
+                    # Sum up probabilitty
                     temp_p = {}
                     for day in range(7):
                         temp_p[day] = {}
@@ -105,16 +112,23 @@ class MC:
                             temp_p[day][hour] = self._nodes[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
                             max_p = temp_p[day][hour] if temp_p[day][hour]>max_p else max_p
                     self._nodes[node] = P(p=temp_p)
+                    # Sum up distance
+                    self._nodes_dist[node][0] += poi.get_max_dist()
+                    self._nodes_dist[node][1] += 1
 
         # Fill empty nodes
         for node in self._topo.get_nodes():
             if node not in self._nodes.keys():
                 self._nodes[node] = self._node_p
+                self._nodes_dist[node] = [self._max_dist, 1]
 
-        # Normalize matrix
+        # Normalize probability matrix
         if self._is_normalize:
             for node, p in self._nodes.items():
                 p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p if p.get_p_hour(day, hour) and max_p else 0 for hour in range(24)} for day in range(7)})
+
+        # Normalize distance matrix
+        self._nodes_dist = {node: dist[0]/dist[1] for node, dist in self._nodes_dist.items()}
 
         # Get charging stations
         self._charge_G, self._capacity = self._topo.charging_station()
@@ -124,8 +138,9 @@ class MC:
         self._traj = {}
         self._traj["nodes"] = T(len(self._nodes.keys()), len(self._users.keys()), node_keys={node: i for i, node in enumerate(list(self._nodes.keys()))})
         self._traj["cs"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))})
+        self._traj["dist"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))}, failures=["dist"])
 
-    def run(self, file_out, weeks, drivers, max_dist=150, weeks_equi=4, trials=100):
+    def run(self, file_out, weeks, drivers, weeks_equi=4, trials=100):
         """Run Monte Carlo code.
 
         Parameters
@@ -137,8 +152,6 @@ class MC:
         drivers : dictionary, integer
             Number of drivers each hour, either an integer for the same hour,
             dictionary of hours or dictionary of days with a dictionary of hours
-        max_dist : float, optional
-            Maximal allowed walking distance
         weeks_equi : integer
             Number of weeks for equilibration
         trials : integer, optional
@@ -175,17 +188,17 @@ class MC:
         self._prepare_nodes()
 
         # Run equilibration
-        self._run_helper(weeks_equi, drivers, users, max_dist, trials, is_equi=True)
+        self._run_helper(weeks_equi, drivers, users, trials, is_equi=True)
 
         # Run production
-        self._run_helper(weeks, drivers, users, max_dist, trials, is_equi=False)
+        self._run_helper(weeks, drivers, users, trials, is_equi=False)
 
         # Save trajectory
         if file_out:
             utils.save(self._traj, file_out)
 
 
-    def _run_helper(self, weeks, drivers, users, max_dist, trials, is_equi):
+    def _run_helper(self, weeks, drivers, users, trials, is_equi):
         """Run helper for processing weeks.
 
         Parameters
@@ -196,8 +209,6 @@ class MC:
             Dictionary containing the number of drivers per day per hour
         users : dictionary
             User dictionary
-        max_dist : float, optional
-            Maximal allowed walking distance
         trials : integer
             Number of trials for faild user and node selections per driver
         is_equi : bool
@@ -241,16 +252,18 @@ class MC:
                                                 self._traj["cs"].add_fail(day, hour, dest, user_id, "occ")
                                             is_success = False
                                         ## Check distance and fail move if necessary with reason distance
-                                        if is_success and dist > max_dist:
+                                        if is_success and dist > self._nodes_dist[node]:
                                             if not is_equi:
                                                 self._traj["nodes"].add_fail(day, hour, node, user_id, "dist")
                                                 self._traj["cs"].add_fail(day, hour, dest, user_id, "dist")
+                                                self._traj["dist"].add_fail_dist(day, hour, dest, user_id, dist)
                                             is_success = False
                                         ## Add session if successful
                                         if is_success:
                                             if not is_equi:
                                                 self._traj["nodes"].add_success(day, hour, node, user_id)
                                                 self._traj["cs"].add_success(day, hour, dest, user_id)
+                                                self._traj["dist"].add_success_dist(day, hour, dest, user_id, dist)
                                             self._stations[dest]["cap"][user_id] += 1
                                         # End node trials if successful
                                         break

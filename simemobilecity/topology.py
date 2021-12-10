@@ -162,7 +162,7 @@ class Topology:
         # Create list conatining capacities
         capacity_list = gdf["capacity"]
         capacity_list = pd.to_numeric(capacity_list, downcast="integer")
-        capacity_list = {node: int(val) if not math.isnan(val) else 1 for node, val in dict(capacity_list["node"]).items()}
+        capacity_list = {node: int(val) if not math.isnan(val) else 2 for node, val in dict(capacity_list["node"]).items()}
 
         capacity = {}
         for i, node in enumerate(pos["node"].index):

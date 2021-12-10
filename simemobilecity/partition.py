@@ -244,8 +244,27 @@ class T:
         """
         self._t[self._index(day, hour, node, user_id)] += 1
 
+    def add_success_dist(self, day, hour, node, user_id, dist):
+        """Add walking distance of a successfull charging instance to given day,
+        hour, node, and user type.
+
+        Parameters
+        ----------
+        day : integer
+            Day index
+        hour : integer
+            Hour index
+        node : node
+            Node index
+        user_id : integer
+            User index
+        dist : float
+            Walking distance from node to charging station
+        """
+        self._t[self._index(day, hour, node, user_id)] += dist
+
     def add_fail(self, day, hour, node, user_id, fail):
-        """Add a failed charging instance to given day, hour, node, and user_id
+        """Add a failed charging instance to given day, hour, node, and user type
         with the given failure reason.
 
         Parameters
@@ -262,6 +281,25 @@ class T:
             Failure reason
         """
         self._t[self._index(day, hour, node, user_id, fail)] += 1
+
+    def add_fail_dist(self, day, hour, node, user_id, dist):
+        """Add a failed charging instance to given day, hour, node, and user type
+        with the given failure reason.
+
+        Parameters
+        ----------
+        day : integer
+            Day index
+        hour : integer
+            Hour index
+        node : node
+            Node index
+        user_id : integer
+            User index
+        dist : float
+            Walking distance from node to charging station
+        """
+        self._t[self._index(day, hour, node, user_id, "dist")] += dist
 
     def extract(self, days, hours, users, is_norm=True):
         """Extract data from trajectory for the given days hours and user types.
@@ -283,7 +321,7 @@ class T:
         Returns
         -------
         nodes : dictionary
-            Dictionary of node ids with percentages for success and failure
+            Dictionary of node ids with amount for success and failure
         """
         # Initialize
         nodes = {}
@@ -317,7 +355,7 @@ class T:
     # Setter Methods #
     ##################
     def set_success(self, day, hour, node, user_id, val):
-        """Set sucess value for given day, hour, node, and user_id.
+        """Set sucess value for given day, hour, node, and user type.
 
         Parameters
         ----------
@@ -335,7 +373,7 @@ class T:
         self._t[self._index(day, hour, node, user_id)] = val
 
     def set_fail(self, day, hour, node, user_id, fail, val):
-        """Set failure value for given day, hour, node, and user_id with
+        """Set failure value for given day, hour, node, and user type with
         the given failure reason.
 
         Parameters
@@ -360,7 +398,7 @@ class T:
     # Getter Methods #
     ##################
     def get_success(self, day, hour, node, user_id):
-        """Get sucess value for given day, hour, node, and user_id.
+        """Get sucess value for given day, hour, node, and user type.
 
         Parameters
         ----------
@@ -382,7 +420,7 @@ class T:
 
 
     def get_fail(self, day, hour, node, user_id, fail):
-        """Get failure value for given day, hour, node, and user_id with
+        """Get failure value for given day, hour, node, and user type with
         the given failure reason.
 
         Parameters

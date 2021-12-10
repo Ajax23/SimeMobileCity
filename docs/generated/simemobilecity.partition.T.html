@@ -155,25 +155,31 @@ distance <strong>dist</strong></p>
 <td>Calculate list index for given settings.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.T.add_fail.html#simemobilecity.partition.T.add_fail" title="simemobilecity.partition.T.add_fail"><code class="xref py py-obj docutils literal"><span class="pre">add_fail</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id,&nbsp;fail)</td>
-<td>Add a failed charging instance to given day, hour, node, and user_id with the given failure reason.</td>
+<td>Add a failed charging instance to given day, hour, node, and user type with the given failure reason.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.T.add_success.html#simemobilecity.partition.T.add_success" title="simemobilecity.partition.T.add_success"><code class="xref py py-obj docutils literal"><span class="pre">add_success</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id)</td>
+<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.T.add_fail_dist.html#simemobilecity.partition.T.add_fail_dist" title="simemobilecity.partition.T.add_fail_dist"><code class="xref py py-obj docutils literal"><span class="pre">add_fail_dist</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id,&nbsp;dist)</td>
+<td>Add a failed charging instance to given day, hour, node, and user type with the given failure reason.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.T.add_success.html#simemobilecity.partition.T.add_success" title="simemobilecity.partition.T.add_success"><code class="xref py py-obj docutils literal"><span class="pre">add_success</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id)</td>
 <td>Add a successfull charging instance to given day, hour, node, and user_id.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.T.add_success_dist.html#simemobilecity.partition.T.add_success_dist" title="simemobilecity.partition.T.add_success_dist"><code class="xref py py-obj docutils literal"><span class="pre">add_success_dist</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id,&nbsp;dist)</td>
+<td>Add walking distance of a successfull charging instance to given day, hour, node, and user type.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.T.extract.html#simemobilecity.partition.T.extract" title="simemobilecity.partition.T.extract"><code class="xref py py-obj docutils literal"><span class="pre">extract</span></code></a>(days,&nbsp;hours,&nbsp;users[,&nbsp;is_norm])</td>
 <td>Extract data from trajectory for the given days hours and user types.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.T.get_fail.html#simemobilecity.partition.T.get_fail" title="simemobilecity.partition.T.get_fail"><code class="xref py py-obj docutils literal"><span class="pre">get_fail</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id,&nbsp;fail)</td>
-<td>Get failure value for given day, hour, node, and user_id with the given failure reason.</td>
+<td>Get failure value for given day, hour, node, and user type with the given failure reason.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.T.get_success.html#simemobilecity.partition.T.get_success" title="simemobilecity.partition.T.get_success"><code class="xref py py-obj docutils literal"><span class="pre">get_success</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id)</td>
-<td>Get sucess value for given day, hour, node, and user_id.</td>
+<td>Get sucess value for given day, hour, node, and user type.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="simemobilecity.partition.T.set_fail.html#simemobilecity.partition.T.set_fail" title="simemobilecity.partition.T.set_fail"><code class="xref py py-obj docutils literal"><span class="pre">set_fail</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id,&nbsp;fail,&nbsp;val)</td>
-<td>Set failure value for given day, hour, node, and user_id with the given failure reason.</td>
+<td>Set failure value for given day, hour, node, and user type with the given failure reason.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="simemobilecity.partition.T.set_success.html#simemobilecity.partition.T.set_success" title="simemobilecity.partition.T.set_success"><code class="xref py py-obj docutils literal"><span class="pre">set_success</span></code></a>(day,&nbsp;hour,&nbsp;node,&nbsp;user_id,&nbsp;val)</td>
-<td>Set sucess value for given day, hour, node, and user_id.</td>
+<td>Set sucess value for given day, hour, node, and user type.</td>
 </tr>
 </tbody>
 </table>

@@ -203,7 +203,10 @@ class UserModelCase(unittest.TestCase):
         poi = sec.Poi(topo, {"amenity": ["cafe"]}, 1)
         poi_G = poi.get_G()
 
+        poi.set_max_dist(1000)
+
         self.assertEqual(poi.get_topo(), topo)
+        self.assertEqual(poi.get_max_dist(), 1000)
         self.assertEqual(poi.get_tags(), {"amenity": ["cafe"]})
         # self.assertEqual(poi.get_G(), G)
         # self.assertEqual(poi.get_nodes()[0], 3571318797)
@@ -249,8 +252,7 @@ class UserModelCase(unittest.TestCase):
         print(df)
 
         plt.figure(figsize=(6, 4))
-        sns.scatterplot(data=df, x="x", y="y", hue="capacity", size="capacity",
-            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        sns.scatterplot(data=df, x="x", y="y", hue="capacity", size="capacity", palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
         plt.savefig("output/mc.pdf", format="pdf", dpi=1000)
 
         # Check errors
