@@ -110,6 +110,11 @@ class UserModelCase(unittest.TestCase):
         # Getter
         self.assertEqual(t.get_success(6, 23, 1, 1), 10)
         self.assertEqual(t.get_fail(6, 23, 1, 1, "dist"), 10)
+        self.assertEqual(t.get_num_days(), 7)
+        self.assertEqual(t.get_num_hours(), 24)
+        self.assertEqual(t.get_num_users(), 2)
+        self.assertEqual(t.get_num_nodes(), 2)
+        self.assertEqual(t.get_node_keys(), {})
 
         # Extract
         extract = t.extract(list(range(7)), list(range(24)), [0, 1])
@@ -284,6 +289,10 @@ class UserModelCase(unittest.TestCase):
         mc.add_poi(sec.Poi(topo, {"amenity": ["bar"]}, 0.3))
         mc.run("data/traj.obj", 12, 1000)
 
+
+    ############
+    # Analysis #
+    ############
     def test_analyze(self):
         # self.skipTest("Temporary")
 
@@ -298,19 +307,36 @@ class UserModelCase(unittest.TestCase):
         print(df)
 
         plt.figure(figsize=(6, 4))
-        sns.scatterplot(data=df, x="x", y="y", hue="success", size="success",
-            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        sns.scatterplot(data=df, x="x", y="y", hue="success", size="success", palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
         plt.savefig("output/ana_success.pdf", format="pdf", dpi=1000)
 
         plt.figure(figsize=(6, 4))
-        sns.scatterplot(data=df, x="x", y="y", hue="fail_occ", size="fail_occ",
-            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        sns.scatterplot(data=df, x="x", y="y", hue="fail_occ", size="fail_occ", palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
         plt.savefig("output/ana_fail_occ.pdf", format="pdf", dpi=1000)
 
         plt.figure(figsize=(6, 4))
-        sns.scatterplot(data=df, x="x", y="y", hue="fail_dist", size="fail_dist",
-            palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
+        sns.scatterplot(data=df, x="x", y="y", hue="fail_dist", size="fail_dist", palette="ch:r=-.2,d=.3_r", sizes=(1, 8), linewidth=0)
         plt.savefig("output/ana_fail_dist.pdf", format="pdf", dpi=1000)
+
+
+    ################
+    # Optimization #
+    ################
+    def test_optimize(self):
+        # self.skipTest("Temporary")
+
+        # Generate test trajectory
+        name = "Munich, Bavaria, Germany"
+        G = sec.utils.load("data/munich_G.obj")
+        Gp = sec.utils.load("data/munich_Gp.obj")
+        topo = sec.Topology({"name": name, "G": G, "Gp": Gp}, is_log=False)
+
+        # Load trajectory
+        traj = sec.utils.load("data/traj.obj")
+
+        # Initialize optimize object
+        opt = sec.Optimize(topo)
+        opt.run(traj, crit={"dist": 0.15, "occ": 0.15})
 
 
 if __name__ == '__main__':

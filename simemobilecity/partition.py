@@ -442,3 +442,53 @@ class T:
             Trajectory value
         """
         return self._t[self._index(day, hour, node, user_id, fail)]
+
+    def get_num_days(self):
+        """Get number of days.
+
+        Returns
+        -------
+        val : integer
+            Number of days
+        """
+        return self._num_days
+
+    def get_num_hours(self):
+        """Get number of hours.
+
+        Returns
+        -------
+        val : integer
+            Number of hours
+        """
+        return self._num_hours
+
+    def get_num_users(self):
+        """Get number of users.
+
+        Returns
+        -------
+        val : integer
+            Number of users
+        """
+        return self._num_users
+
+    def get_num_nodes(self):
+        """Get number of ndoes.
+
+        Returns
+        -------
+        val : integer
+            Number of nodes
+        """
+        return self._num_nodes
+
+    def get_node_keys(self):
+        """Get number of users.
+
+        Returns
+        -------
+        val : dictionary
+            Node keys dictionary for mapping osmnx index to list index
+        """
+        return self._node_keys

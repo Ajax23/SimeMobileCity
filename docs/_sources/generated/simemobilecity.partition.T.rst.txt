@@ -24,6 +24,11 @@ T
       ~T.add_success_dist
       ~T.extract
       ~T.get_fail
+      ~T.get_node_keys
+      ~T.get_num_days
+      ~T.get_num_hours
+      ~T.get_num_users
+      ~T.get_num_nodes
       ~T.get_success
       ~T.set_fail
       ~T.set_success

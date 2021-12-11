@@ -21,6 +21,7 @@ Simulation
     topology.Topology
     poi.Poi
     mc.MC
+    optimize.Optimize
 
 
 .. _utils_api:
