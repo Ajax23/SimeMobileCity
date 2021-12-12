@@ -82,12 +82,12 @@ class MC:
         self._users[len(self._users.keys())] = {"user": user, "percent": percentage}
 
     def add_poi(self, poi):
-        """Add Poi to simulation system.
+        """Add POI to simulation system.
 
         Parameters
         ----------
         poi : Poi
-            Poi object
+            POI object
         """
         self._pois.append(poi)
 
@@ -122,7 +122,7 @@ class MC:
         """This helper function processes user and poi inputs into node list.
         User ids are added to a user list for the nodes, to count the number
         of successful and unsuccessfull attempts to reach destination.
-        Poi probabilities are added to the nodes to set the probability for
+        POI probabilities are added to the nodes to set the probability for
         choosing certain nodes as a destination.
 
         Nodes have a dictionary contatining a probability object, while charging
@@ -138,8 +138,8 @@ class MC:
             same hour probability for different days, or a dictionary of days each
             with a dictionary of hours
         p_norm: string
-            Normalize POI dicts with maximum value based on given type
-            :math:`\\rightarrow` largest value is equal to one
+            Normalize POI dicts with maximum value from all nodes based on given
+            type :math:`\\rightarrow` largest value is equal to one
         max_dist : float
             Maximal allowed walking distance from charging station to node in m, for
             nodes not covered by given POI objects
@@ -149,7 +149,7 @@ class MC:
         self._nodes_dist = {}
 
         # Process poi
-        max_p = {day: 0 for day in range(7)}
+        max_p = {day: {hour: 0 for hour in range(24)} for day in range(7)}
         for poi in self._pois:
             for node in poi.get_nodes():
                 if node not in self._nodes.keys():
@@ -162,7 +162,7 @@ class MC:
                         temp_p[day] = {}
                         for hour in range(24):
                             temp_p[day][hour] = self._nodes[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
-                            max_p[day] = temp_p[day][hour] if temp_p[day][hour]>max_p[day] else max_p[day]
+                            max_p[day][hour] = temp_p[day][hour] if temp_p[day][hour]>max_p[day][hour] else max_p[day][hour]
                     self._nodes[node] = P(p=temp_p)
                     # Sum up distance
                     self._nodes_dist[node][0] += poi.get_max_dist()
@@ -176,12 +176,15 @@ class MC:
 
         # Normalize probability matrix
         if p_norm:
-            max_p_week = max(max_p.values())
+            max_p_week = max([max(max_p[day].values()) for day in range(7)])
+            max_p_day = {day: max(max_p[day].values()) for day in range(7)}
             for node, p in self._nodes.items():
                 if p_norm=="week":
                     p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p_week if p.get_p_hour(day, hour) and max_p_week else 0 for hour in range(24)} for day in range(7)})
                 elif p_norm=="day":
-                    p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p[day] if p.get_p_hour(day, hour) and max_p[day] else 0 for hour in range(24)} for day in range(7)})
+                    p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p_day[day] if p.get_p_hour(day, hour) and max_p_day[day] else 0 for hour in range(24)} for day in range(7)})
+                elif p_norm=="hour":
+                    p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p[day][hour] if p.get_p_hour(day, hour) and max_p[day][hour] else 0 for hour in range(24)} for day in range(7)})
 
         # Normalize distance matrix
         self._nodes_dist = {node: dist[0]/dist[1] for node, dist in self._nodes_dist.items()}
@@ -201,11 +204,13 @@ class MC:
         represent the number of MC steps. During the equilibration run, the
         trajectory is not edited until sttarting the production run. If a user
         or POI choice fails, it is repeated for the given number of trials.
-        The probability matrix for the graph nodes can be normalized using the
-        options
+        POI probabilities are added to the nodes to set the probability for
+        choosing certain nodes as a destination. The probability matrix for the
+        graph nodes can be normalized using the options
 
-        * **week** - Normalize all probabilities of the week with maximum value of all days
-        * **day** - Normalize all probabilities of the day with maximum value of all hours per day
+        * **week** - Normalize all node probabilities with the maximum value from the week
+        * **day** -  Normalize all node probabilities each day with the maximum value from the day
+        * **hour** - Normalize all node probabilities each hour with the maximum value from the hour
         * *empty string* - Do not normalize
 
         Once finished, the trajectories are saved in form of a dictionary for
@@ -249,8 +254,8 @@ class MC:
         users = sum([[user_id for x in range(user["percent"])] for user_id, user in self._users.items()], [])
 
         # Process normalization
-        if p_norm not in ["", "week", "day"]:
-            print("MC.run: ERROR - Wrong p_norm value - choose from \"\", \"week\", \"day\"...")
+        if p_norm not in ["", "week", "day", "hour"]:
+            print("MC.run: ERROR - Wrong p_norm value - choose from \"\", \"week\", \"day\", \"hour\"...")
             return
 
         # Process drivers
@@ -259,14 +264,17 @@ class MC:
             return
 
         # Prepare trajectories
+        print("Starting preparation...")
         self._prepare(P(node_p), p_norm, max_dist)
 
         # Run equilibration
         if weeks_equi:
+            print("Starting equilibration...")
             self._run_helper(weeks_equi, users, trials, is_equi=True)
 
         # Run production
         if weeks:
+            print("Starting production...")
             self._run_helper(weeks, users, trials, is_equi=False)
 
         # Save trajectory
@@ -312,7 +320,7 @@ class MC:
                                 # Choose random node
                                 node = random.choice(list(self._nodes.keys()))
                                 rand = random.uniform(0, 1)
-                                # Poi MC step
+                                # POI MC step
                                 for j in range(trials):
                                     if rand <= self._nodes[node].get_p_hour(day, hour):
                                         # Determine nearest charging station and calculate distance

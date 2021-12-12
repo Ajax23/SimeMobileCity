@@ -255,7 +255,7 @@ class UserModelCase(unittest.TestCase):
         # Run MC code
         mc.run("", 0, 0, p_norm="week")
         mc.run("", 0, 0, p_norm="day")
-        mc.run("output/mc_test.obj", 1, 1, trials=1)
+        mc.run("output/mc_test.obj", 1, 1, trials=1, p_norm="hour")
 
         # Check errors
         self.assertIsNone(mc.add_user(sec.User(1), 1337))
