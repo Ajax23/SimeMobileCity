@@ -250,7 +250,7 @@ class UserModelCase(unittest.TestCase):
         mc.set_drivers(0)
         mc.set_drivers({day: 0 for day in range(7)})
         mc.set_drivers({hour: 0 for hour in range(24)})
-        mc.set_drivers({day: {hour: 0 for hour in range(24)} for day in range(7)})
+        mc.set_drivers({day: {hour: 20 for hour in range(24)} for day in range(7)})
 
         # Set test capacity
         capacity = {1249710076: 4, 183888004: 2}
