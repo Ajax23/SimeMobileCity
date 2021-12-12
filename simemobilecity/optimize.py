@@ -8,6 +8,8 @@
 import sys
 import random
 
+import simemobilecity.utils as utils
+
 
 class Optimize:
     """Run optimization
