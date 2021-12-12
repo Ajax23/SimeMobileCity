@@ -14,35 +14,51 @@ from simemobilecity.partition import P, T
 
 
 class MC:
-    """This class run a Monte Carlo simulation. Probability of every node is the
-    sum of given probabilities from the poi list. This means, nodes intersecting
-    multiple pois have a higher probability than the single pois.
+    """This class runs the Monte Carlo simulation.
 
     Parameters
     ----------
     topo : Topology
         Topology object
-    node_p : dictionary, float, optional
-        Probability of all nodes not covered by pois each hour each weekday,
-        either a float for the same probability each hour, dictionary of hours
-        for same hour distribution for all days, a dictionary of days for the
-        same hour probability for different days, or a dictionary of days each
-        with a dictionary of hours
-    max_dist : float, optional
-        Maximal allowed walking distance from charging station to node in m, for
-        nodes not covered by given POI objects
-    is_normalize: bool, optional
-        True to normalize POI dicts with maximum value :math:`\\rightarrow`
-        largest value is equal to one
+
+    Examples
+    --------
+    Following example runs the MC simulation
+
+    .. code-block:: python
+
+        import simemobilecity as sec
+
+        # Load topology of Munich
+        topo = sec.Topology({"name": "Munich, Bavaria, Germany"}, tags={})
+
+        # Create user with a probability of 0.5 to drive at any hour
+        user = sec.User(0.5)
+
+        # Load cafe POIs from OSM
+        poi = sec.Poi(topo, tags, {"amenity": ["cafe"]})
+
+        # Initialize MC object
+        mc = sec.MC(topo)
+
+        # Add 100 percent of the user
+        mc.add_user(user, 100)
+
+        # Add cafe poi
+        mc.add_poi(poi)
+
+        # Set number of drivers to 100 every hour
+        mc.set_drivers(100)
+
+        # Run MC simulation with 1 equilibration and 4 production weeks
+        mc.run("output/traj.obj", weeks=4, weeks_equi=1)
     """
-    def __init__(self, topo, node_p=0.1, max_dist=500, is_normalize=True):
+    def __init__(self, topo):
         # Initialize
         self._topo = topo
-        self._node_p = P(node_p)
         self._users = {}
         self._pois = []
-        self._max_dist = max_dist
-        self._is_normalize = is_normalize
+        self._drivers = {}
 
     def add_user(self, user, percentage):
         """Add User to simulation system.
@@ -75,99 +91,15 @@ class MC:
         """
         self._pois.append(poi)
 
-    def _prepare_nodes(self):
-        """This helper function processes user and poi inputs into node list.
-        User ids are added to a user list for the nodes, to count the number
-        of successful and unsuccessfull attempts to reach destination.
-        Poi probabilities are added to the nodes to set the probability for
-        choosing certain nodes as a destination.
-
-        Nodes have a dictionary contatining a probability object, while charging
-        stations are a dictionary used for simulation to fill in the capacity
-        and compare to the maximum capacity.
+    def set_drivers(self, drivers):
+        """Add number of drivers.
 
         Parameters
         ----------
-        is_normalize : bool
-            True to normalize POI dicts with maximum value :math:`\\rightarrow`
-            largest value is equal to one
-        """
-        # Initialize
-        self._nodes = {}
-        self._nodes_dist = {}
-
-        # Process poi
-        max_p = 0
-        for poi in self._pois:
-            for node in poi.get_nodes():
-                if node not in self._nodes.keys():
-                    self._nodes[node] = P(p=poi.get_p())
-                    self._nodes_dist[node] = [poi.get_max_dist(), 1]
-                else:
-                    # Sum up probabilitty
-                    temp_p = {}
-                    for day in range(7):
-                        temp_p[day] = {}
-                        for hour in range(24):
-                            temp_p[day][hour] = self._nodes[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
-                            max_p = temp_p[day][hour] if temp_p[day][hour]>max_p else max_p
-                    self._nodes[node] = P(p=temp_p)
-                    # Sum up distance
-                    self._nodes_dist[node][0] += poi.get_max_dist()
-                    self._nodes_dist[node][1] += 1
-
-        # Fill empty nodes
-        for node in self._topo.get_nodes():
-            if node not in self._nodes.keys():
-                self._nodes[node] = self._node_p
-                self._nodes_dist[node] = [self._max_dist, 1]
-
-        # Normalize probability matrix
-        if self._is_normalize:
-            for node, p in self._nodes.items():
-                p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p if p.get_p_hour(day, hour) and max_p else 0 for hour in range(24)} for day in range(7)})
-
-        # Normalize distance matrix
-        self._nodes_dist = {node: dist[0]/dist[1] for node, dist in self._nodes_dist.items()}
-
-        # Get charging stations
-        self._charge_G, self._capacity = self._topo.charging_station()
-        self._stations = {station: {"max": capacity, "cap": [0 for user_id in range(len(self._users.keys()))]} for station, capacity in self._capacity.items()}
-
-        # Create trajectory
-        self._traj = {}
-        self._traj["nodes"] = T(len(self._nodes.keys()), len(self._users.keys()), node_keys={node: i for i, node in enumerate(list(self._nodes.keys()))})
-        self._traj["cs"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))})
-        self._traj["dist"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))}, failures=["dist"])
-
-    def run(self, file_out, weeks, drivers, weeks_equi=4, trials=100):
-        """Run Monte Carlo code.
-
-        Parameters
-        ----------
-        file_out : string
-            file link for output object file
-        weeks : integer
-            Number of weeks to simulate
         drivers : dictionary, integer
             Number of drivers each hour, either an integer for the same hour,
             dictionary of hours or dictionary of days with a dictionary of hours
-        weeks_equi : integer
-            Number of weeks for equilibration
-        trials : integer, optional
-            Number of trials for faild user and node selections per driver
-
-        Returns
-        -------
-        results : dictionary
-            Node occupance
         """
-        # Process users
-        if sum([x["percent"] for x in self._users.values()]) < 100:
-            print("MC.run: User percentages do not add up to 100...")
-            return
-        users = sum([[user_id for x in range(user["percent"])] for user_id, user in self._users.items()], [])
-
         # Process input
         if isinstance(drivers, int):
             drivers = {day: {hour: drivers for hour in range(24)} for day in range(7)}
@@ -184,29 +116,171 @@ class MC:
             print("MC: Invalid dirver input...")
             return
 
-        # Process nodes
-        self._prepare_nodes()
+        self._drivers = drivers
+
+    def _prepare(self, node_p, p_norm, max_dist):
+        """This helper function processes user and poi inputs into node list.
+        User ids are added to a user list for the nodes, to count the number
+        of successful and unsuccessfull attempts to reach destination.
+        Poi probabilities are added to the nodes to set the probability for
+        choosing certain nodes as a destination.
+
+        Nodes have a dictionary contatining a probability object, while charging
+        stations are a dictionary used for simulation to fill in the capacity
+        and compare to the maximum capacity.
+
+        Parameters
+        ----------
+        node_p : dictionary, float
+            Probability of all nodes not covered by pois each hour each weekday,
+            either a float for the same probability each hour, dictionary of hours
+            for same hour distribution for all days, a dictionary of days for the
+            same hour probability for different days, or a dictionary of days each
+            with a dictionary of hours
+        p_norm: string
+            Normalize POI dicts with maximum value based on given type
+            :math:`\\rightarrow` largest value is equal to one
+        max_dist : float
+            Maximal allowed walking distance from charging station to node in m, for
+            nodes not covered by given POI objects
+        """
+        # Initialize
+        self._nodes = {}
+        self._nodes_dist = {}
+
+        # Process poi
+        max_p = {day: 0 for day in range(7)}
+        for poi in self._pois:
+            for node in poi.get_nodes():
+                if node not in self._nodes.keys():
+                    self._nodes[node] = P(p=poi.get_p())
+                    self._nodes_dist[node] = [poi.get_max_dist(), 1]
+                else:
+                    # Sum up probabilitty
+                    temp_p = {}
+                    for day in range(7):
+                        temp_p[day] = {}
+                        for hour in range(24):
+                            temp_p[day][hour] = self._nodes[node].get_p_hour(day, hour)+poi.get_p_hour(day, hour)
+                            max_p[day] = temp_p[day][hour] if temp_p[day][hour]>max_p[day] else max_p[day]
+                    self._nodes[node] = P(p=temp_p)
+                    # Sum up distance
+                    self._nodes_dist[node][0] += poi.get_max_dist()
+                    self._nodes_dist[node][1] += 1
+
+        # Fill empty nodes
+        for node in self._topo.get_nodes():
+            if node not in self._nodes.keys():
+                self._nodes[node] = node_p
+                self._nodes_dist[node] = [max_dist, 1]
+
+        # Normalize probability matrix
+        if p_norm:
+            max_p_week = max(max_p.values())
+            for node, p in self._nodes.items():
+                if p_norm=="week":
+                    p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p_week if p.get_p_hour(day, hour) and max_p_week else 0 for hour in range(24)} for day in range(7)})
+                elif p_norm=="day":
+                    p.set_p({day: {hour: p.get_p_hour(day, hour)/max_p[day] if p.get_p_hour(day, hour) and max_p[day] else 0 for hour in range(24)} for day in range(7)})
+
+        # Normalize distance matrix
+        self._nodes_dist = {node: dist[0]/dist[1] for node, dist in self._nodes_dist.items()}
+
+        # Get charging stations
+        self._charge_G, self._capacity = self._topo.charging_station()
+        self._stations = {station: {"max": capacity, "cap": [0 for user_id in range(len(self._users.keys()))]} for station, capacity in self._capacity.items()}
+
+        # Create trajectory
+        self._traj = {}
+        self._traj["nodes"] = T(len(self._nodes.keys()), len(self._users.keys()), node_keys={node: i for i, node in enumerate(list(self._nodes.keys()))})
+        self._traj["cs"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))})
+        self._traj["dist"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))}, failures=["dist"])
+
+    def run(self, file_out, weeks, weeks_equi=4, trials=100, node_p=0.1, p_norm="", max_dist=500):
+        """Run Monte Carlo code. Hereby the number of drivers for each hour
+        represent the number of MC steps. During the equilibration run, the
+        trajectory is not edited until sttarting the production run. If a user
+        or POI choice fails, it is repeated for the given number of trials.
+        The probability matrix for the graph nodes can be normalized using the
+        options
+
+        * **week** - Normalize all probabilities of the week with maximum value of all days
+        * **day** - Normalize all probabilities of the day with maximum value of all hours per day
+        * *empty string* - Do not normalize
+
+        Once finished, the trajectories are saved in form of a dictionary for
+
+        * **nodes** - Node trajectory
+        * **cs** - Charging station trajectory
+        * **dist** - Charging station accumulated walking distance
+
+        Parameters
+        ----------
+        file_out : string
+            file link for output object file
+        weeks : integer
+            Number of weeks to simulate
+        weeks_equi : integer
+            Number of weeks for equilibration
+        trials : integer, optional
+            Number of trials for faild user and node selections per driver
+        node_p : dictionary, float, optional
+            Probability of all nodes not covered by pois each hour each weekday,
+            either a float for the same probability each hour, dictionary of hours
+            for same hour distribution for all days, a dictionary of days for the
+            same hour probability for different days, or a dictionary of days each
+            with a dictionary of hours
+        p_norm: string, optional
+            Normalize POI dicts with maximum value based on given type
+            :math:`\\rightarrow` largest value is equal to one
+        max_dist : float, optional
+            Maximal allowed walking distance from charging station to node in m, for
+            nodes not covered by given POI objects
+
+        Returns
+        -------
+        results : dictionary
+            Node occupance
+        """
+        # Process users
+        if sum([x["percent"] for x in self._users.values()]) < 100:
+            print("MC.run: ERROR - User percentages do not add up to 100...")
+            return
+        users = sum([[user_id for x in range(user["percent"])] for user_id, user in self._users.items()], [])
+
+        # Process normalization
+        if p_norm not in ["", "week", "day"]:
+            print("MC.run: ERROR - Wrong p_norm value - choose from \"\", \"week\", \"day\"...")
+            return
+
+        # Process drivers
+        if not self._drivers:
+            print("MC.run: ERROR - No drivers set...")
+            return
+
+        # Prepare trajectories
+        self._prepare(P(node_p), p_norm, max_dist)
 
         # Run equilibration
-        self._run_helper(weeks_equi, drivers, users, trials, is_equi=True)
+        if weeks_equi:
+            self._run_helper(weeks_equi, users, trials, is_equi=True)
 
         # Run production
-        self._run_helper(weeks, drivers, users, trials, is_equi=False)
+        if weeks:
+            self._run_helper(weeks, users, trials, is_equi=False)
 
         # Save trajectory
         if file_out:
             utils.save(self._traj, file_out)
 
 
-    def _run_helper(self, weeks, drivers, users, trials, is_equi):
+    def _run_helper(self, weeks, users, trials, is_equi):
         """Run helper for processing weeks.
 
         Parameters
         ----------
         weeks : int
             Number of weeks to run
-        drivers : dictionary
-            Dictionary containing the number of drivers per day per hour
         users : dictionary
             User dictionary
         trials : integer
@@ -227,7 +301,7 @@ class MC:
                     # Filling Step #
                     ################
                     # Run through dirvers
-                    for driver in range(drivers[day][hour]):
+                    for driver in range(self._drivers[day][hour]):
                         # Choose random user
                         user_id = random.choice(users)
                         user = self._users[user_id]["user"]

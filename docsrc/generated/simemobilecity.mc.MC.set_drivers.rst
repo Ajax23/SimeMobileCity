@@ -5,9 +5,9 @@
     </div>
     <div class=col-md-9 content>
 
-MC\.\_prepare\_nodes
-====================
+MC\.set\_drivers
+================
 
 .. currentmodule:: simemobilecity.mc
 
-.. automethod:: MC._prepare_nodes
+.. automethod:: MC.set_drivers
