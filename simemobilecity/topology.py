@@ -174,6 +174,26 @@ class Topology:
 
         return C, capacity
 
+    def radius(self, node, radius):
+        """Find nodes within radius of given node.
+
+        Parameters
+        ----------
+        node : integer
+            Node index
+        radius : float
+            Search radius for other nodes in m
+
+        Returns
+        -------
+        nodes : list
+            List of nodes within radius
+        """
+        # Search for nodes
+        nodes = nx.ego_graph(self._G, node, radius, distance="length")
+
+        return list(nodes)
+
     def plot(self, pois=[], routes=[], ax=None, kwargs={"G": {}, "P": {}, "R": {}}):
         """Plot graph optionally with chargin stations and routes.
 

@@ -110,35 +110,60 @@
 <h1>MC.run<a class="headerlink" href="#mc-run" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="simemobilecity.mc.MC.run">
-<code class="descclassname">MC.</code><code class="descname">run</code><span class="sig-paren">(</span><em>file_out</em>, <em>weeks</em>, <em>drivers</em>, <em>weeks_equi=4</em>, <em>trials=100</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.mc.MC.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run Monte Carlo code.</p>
+<code class="descclassname">MC.</code><code class="descname">run</code><span class="sig-paren">(</span><em>file_out</em>, <em>weeks</em>, <em>weeks_equi</em>, <em>capacity={}</em>, <em>trials=100</em>, <em>node_p=0.1</em>, <em>p_norm=''</em>, <em>max_dist=500</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.mc.MC.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run Monte Carlo code. Hereby the number of drivers for each hour
+represent the number of MC steps. During the equilibration run, the
+trajectory is not edited until sttarting the production run. If a user
+or POI choice fails, it is repeated for the given number of trials.
+POI probabilities are added to the nodes to set the probability for
+choosing certain nodes as a destination. The probability matrix for the
+graph nodes can be normalized using the options</p>
+<ul class="simple">
+<li><strong>week</strong> - Normalize all node probabilities with the maximum value from the week</li>
+<li><strong>day</strong> -  Normalize all node probabilities each day with the maximum value from the day</li>
+<li><strong>hour</strong> - Normalize all node probabilities each hour with the maximum value from the hour</li>
+<li><em>empty string</em> - Do not normalize</li>
+</ul>
+<p>Once finished, the trajectories are saved in form of a dictionary for</p>
+<ul class="simple">
+<li><strong>nodes</strong> - Node trajectory</li>
+<li><strong>cs</strong> - Charging station trajectory</li>
+<li><strong>dist</strong> - Charging station accumulated walking distance</li>
+</ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
 <dt><strong>file_out</strong> <span class="classifier-delimiter">:</span> <span class="classifier">string</span></dt>
 <dd><p class="first last">file link for output object file</p>
 </dd>
 <dt><strong>weeks</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
 <dd><p class="first last">Number of weeks to simulate</p>
 </dd>
-<dt><strong>drivers</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, integer</span></dt>
-<dd><p class="first last">Number of drivers each hour, either an integer for the same hour,
-dictionary of hours or dictionary of days with a dictionary of hours</p>
-</dd>
 <dt><strong>weeks_equi</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer</span></dt>
 <dd><p class="first last">Number of weeks for equilibration</p>
+</dd>
+<dt><strong>capacity</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
+<dd><p class="first last">Dictionary containing charing station nodes and capacities</p>
 </dd>
 <dt><strong>trials</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer, optional</span></dt>
 <dd><p class="first last">Number of trials for faild user and node selections per driver</p>
 </dd>
-</dl>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
-<dt><strong>results</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
-<dd><p class="first last">Node occupance</p>
+<dt><strong>node_p</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, float, optional</span></dt>
+<dd><p class="first last">Probability of all nodes not covered by pois each hour each weekday,
+either a float for the same probability each hour, dictionary of hours
+for same hour distribution for all days, a dictionary of days for the
+same hour probability for different days, or a dictionary of days each
+with a dictionary of hours</p>
+</dd>
+<dt><strong>p_norm: string, optional</strong></dt>
+<dd><p class="first last">Normalize POI dicts with maximum value based on given type
+<span class="math">\(\rightarrow\)</span> largest value is equal to one</p>
+</dd>
+<dt><strong>max_dist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Maximal allowed walking distance from charging station to node in m, for
+nodes not covered by given POI objects</p>
 </dd>
 </dl>
 </td>

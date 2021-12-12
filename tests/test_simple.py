@@ -252,10 +252,13 @@ class UserModelCase(unittest.TestCase):
         mc.set_drivers({hour: 0 for hour in range(24)})
         mc.set_drivers({day: {hour: 0 for hour in range(24)} for day in range(7)})
 
+        # Set test capacity
+        capacity = {1249710076: 4, 183888004: 2}
+
         # Run MC code
         mc.run("", 0, 0, p_norm="week")
         mc.run("", 0, 0, p_norm="day")
-        mc.run("output/mc_test.obj", 1, 1, trials=1, p_norm="hour")
+        mc.run("output/mc_test.obj", 1, 1, trials=1, p_norm="hour", capacity=capacity)
 
         # Check errors
         self.assertIsNone(mc.add_user(sec.User(1), 1337))
@@ -313,7 +316,12 @@ class UserModelCase(unittest.TestCase):
 
         # Initialize optimize object
         opt = sec.Optimize(topo)
-        opt.run(traj, crit={"dist": 0.15, "occ": 0.15})
+        cap = opt.run(traj, crit={"dist": 0.15, "occ": 0.15})
+
+        print(len(cap), sum(cap.values()))
+
+        topo.plot(pois=[topo.get_G().subgraph(cap.keys())])
+        plt.savefig("output/optimize.pdf", format="pdf", dpi=1000)
 
 
 if __name__ == '__main__':

@@ -16,7 +16,7 @@ Topology
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~Topology.charging_station
       ~Topology.dist
       ~Topology.dist_poi
@@ -25,3 +25,4 @@ Topology
       ~Topology.get_nodes
       ~Topology.plot
       ~Topology.poi
+      ~Topology.radius

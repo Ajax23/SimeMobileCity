@@ -17,8 +17,9 @@ MC
 
    .. autosummary::
 
-      ~MC._prepare_nodes
+      ~MC._prepare
       ~MC.add_poi
       ~MC.add_user
+      ~MC.set_drivers
       ~MC.run
       ~MC._run_helper

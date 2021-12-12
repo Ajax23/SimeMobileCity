@@ -189,17 +189,15 @@ class MC:
         # Normalize distance matrix
         self._nodes_dist = {node: dist[0]/dist[1] for node, dist in self._nodes_dist.items()}
 
-        # Get charging stations
-        self._charge_G, self._capacity = self._topo.charging_station()
+        # Process stations
         self._stations = {station: {"max": capacity, "cap": [0 for user_id in range(len(self._users.keys()))]} for station, capacity in self._capacity.items()}
 
         # Create trajectory
-        self._traj = {}
         self._traj["nodes"] = T(len(self._nodes.keys()), len(self._users.keys()), node_keys={node: i for i, node in enumerate(list(self._nodes.keys()))})
         self._traj["cs"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))})
         self._traj["dist"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))}, failures=["dist"])
 
-    def run(self, file_out, weeks, weeks_equi, trials=100, node_p=0.1, p_norm="", max_dist=500):
+    def run(self, file_out, weeks, weeks_equi, capacity={}, trials=100, node_p=0.1, p_norm="", max_dist=500):
         """Run Monte Carlo code. Hereby the number of drivers for each hour
         represent the number of MC steps. During the equilibration run, the
         trajectory is not edited until sttarting the production run. If a user
@@ -227,6 +225,8 @@ class MC:
             Number of weeks to simulate
         weeks_equi : integer
             Number of weeks for equilibration
+        capacity : dictionary
+            Dictionary containing charing station nodes and capacities
         trials : integer, optional
             Number of trials for faild user and node selections per driver
         node_p : dictionary, float, optional
@@ -241,12 +241,14 @@ class MC:
         max_dist : float, optional
             Maximal allowed walking distance from charging station to node in m, for
             nodes not covered by given POI objects
-
-        Returns
-        -------
-        results : dictionary
-            Node occupance
         """
+        # Process capacity
+        if capacity:
+            self._charge_G = self._topo.get_G().subgraph(capacity.keys())
+            self._capacity = capacity
+        else:
+            self._charge_G, self._capacity = self._topo.charging_station()
+
         # Process users
         if sum([x["percent"] for x in self._users.values()]) < 100:
             print("MC.run: ERROR - User percentages do not add up to 100...")
@@ -265,6 +267,8 @@ class MC:
 
         # Prepare trajectories
         print("Starting preparation...")
+        self._traj = {}
+        self._traj["inp"] = {"weeks": weeks, "cs": self._capacity}
         self._prepare(P(node_p), p_norm, max_dist)
 
         # Run equilibration

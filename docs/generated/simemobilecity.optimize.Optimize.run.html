@@ -110,22 +110,33 @@
 <h1>Optimize.run<a class="headerlink" href="#optimize-run" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="simemobilecity.optimize.Optimize.run">
-<code class="descclassname">Optimize.</code><code class="descname">run</code><span class="sig-paren">(</span><em>traj</em>, <em>cap={}</em>, <em>crit={'dist': 0.5</em>, <em>'occ': 0.5}</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.optimize.Optimize.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Optimize.</code><code class="descname">run</code><span class="sig-paren">(</span><em>traj</em>, <em>crit={'dist': 0.5</em>, <em>'occ': 0.5}</em>, <em>min_dist=150</em>, <em>trials=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.optimize.Optimize.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run optimization.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first docutils">
 <dt><strong>traj</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
 <dd><p class="first last">Simulation trajectory of the mc code - includes the <strong>cs</strong> and
 <strong>dist</strong> entry</p>
 </dd>
-<dt><strong>cap</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Charging station capacities</p>
-</dd>
 <dt><strong>crit</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Critical values of failures at which to optimize</p>
+<dd><p class="first last">Critical values of failures at which to optimize
+Charging station capacities</p>
+</dd>
+<dt><strong>min_dist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
+<dd><p class="first last">Minimal distance for adding new charging stations</p>
+</dd>
+<dt><strong>trials</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer, optional</span></dt>
+<dd><p class="first last">Number of trials for choosing random node</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><dl class="first last docutils">
+<dt><strong>cs</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary</span></dt>
+<dd><p class="first last">Dictionary of node ids and capacity for the charging stations</p>
 </dd>
 </dl>
 </td>
