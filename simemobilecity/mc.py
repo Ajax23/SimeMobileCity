@@ -196,7 +196,7 @@ class MC:
         self._traj["cs"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))})
         self._traj["dist"] = T(len(self._stations.keys()), len(self._users.keys()), node_keys={cs: i for i, cs in enumerate(list(self._stations.keys()))}, failures=["dist"])
 
-    def run(self, file_out, weeks, weeks_equi=4, trials=100, node_p=0.1, p_norm="", max_dist=500):
+    def run(self, file_out, weeks, weeks_equi, trials=100, node_p=0.1, p_norm="", max_dist=500):
         """Run Monte Carlo code. Hereby the number of drivers for each hour
         represent the number of MC steps. During the equilibration run, the
         trajectory is not edited until sttarting the production run. If a user
