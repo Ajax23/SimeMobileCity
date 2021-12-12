@@ -25,7 +25,7 @@ class Optimize:
     ##################
     # Public Methods #
     ##################
-    def run(self, traj, crit={"dist": 0.15, "occ": 0.15}, min_dist=150, trials=1000):
+    def run(self, file_out, traj, crit={"dist": 0.15, "occ": 0.15}, min_dist=150, trials=1000):
         """Run optimization.
 
         Parameters

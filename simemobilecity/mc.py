@@ -241,6 +241,11 @@ class MC:
         max_dist : float, optional
             Maximal allowed walking distance from charging station to node in m, for
             nodes not covered by given POI objects
+
+        Returns
+        -------
+        traj : dictionary
+            Dictionary containing trajectories inputs and distance accumulation
         """
         # Process capacity
         if capacity:
@@ -284,6 +289,8 @@ class MC:
         # Save trajectory
         if file_out:
             utils.save(self._traj, file_out)
+
+        return self._traj
 
 
     def _run_helper(self, weeks, users, trials, is_equi):
