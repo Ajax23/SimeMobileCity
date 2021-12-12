@@ -28,7 +28,7 @@ class Optimize:
     ##################
     # Public Methods #
     ##################
-    def run(self, file_out, traj, crit={"dist": 0.15, "occ": 0.15}, min_dist=150, trials=1000):
+    def run(self, file_out, traj, crit={"dist": 0.15, "occ": 0.15}, max_cp=2, min_dist=150, trials=1000):
         """Run optimization.
 
         Parameters
@@ -39,8 +39,9 @@ class Optimize:
             Simulation trajectory of the mc code - includes the **cs** and
             **dist** entry
         crit : dictionary, optional
-            Critical values of failures at which to optimize
-            Charging station capacities
+            Critical values of failures at which to optimize charging station capacities
+        max_cp : integer, optional
+            Maximal number of charging stations to add to a node
         min_dist : float, optional
             Minimal distance for adding new charging stations
         trials : integer, optional
@@ -81,16 +82,19 @@ class Optimize:
                     tot_sessions = data["fail"][failure]+data["success"]
                     fail_prob = data["fail"][failure]/tot_sessions if data["fail"][failure] else 0
                     if fail_prob > thresh:
+                        # Calculate number of charging points to add
+                        add_cp = int((1+fail_prob)*cap[node])
+                        add_cp = add_cp if add_cp<max_cp else max_cp
+
                         # Occupancy optimization - Add for charging points
                         if failure=="occ":
                             # Add charging points with number of mean failures
-                            cap[node] += int(data["fail"]["occ"]/(num_weeks*num_days))
+                            cap[node] += add_cp
 
                         # Distance fail - Add
                         elif failure=="dist":
                             # Calculate mean failure distance
                             mean_dist = distances[node]["fail"]["dist"]/data["fail"]["dist"] if data["fail"][failure] else 0
-
                             # Check if mean distance is larger than given minimum
                             if mean_dist>min_dist:
                                 # Get nodes within radius
@@ -101,7 +105,7 @@ class Optimize:
                                 # Check if list has elements
                                 if node_r:
                                     # Run through half the number of failed attempts
-                                    for i in range(int(data["fail"]["dist"]/(num_weeks*num_days)/2)):
+                                    for i in range(int(add_cp/2)):
                                         # Iterate random choices
                                         for j in range(trials):
                                             # Choose random node

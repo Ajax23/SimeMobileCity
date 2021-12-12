@@ -110,7 +110,7 @@
 <h1>Optimize.run<a class="headerlink" href="#optimize-run" title="Permalink to this headline">¶</a></h1>
 <dl class="method">
 <dt id="simemobilecity.optimize.Optimize.run">
-<code class="descclassname">Optimize.</code><code class="descname">run</code><span class="sig-paren">(</span><em>traj</em>, <em>crit={'dist': 0.15</em>, <em>'occ': 0.15}</em>, <em>min_dist=150</em>, <em>trials=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.optimize.Optimize.run" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">Optimize.</code><code class="descname">run</code><span class="sig-paren">(</span><em>file_out</em>, <em>traj</em>, <em>crit={'dist': 0.15</em>, <em>'occ': 0.15}</em>, <em>max_cp=2</em>, <em>min_dist=150</em>, <em>trials=1000</em><span class="sig-paren">)</span><a class="headerlink" href="#simemobilecity.optimize.Optimize.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run optimization.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -125,8 +125,10 @@
 <strong>dist</strong> entry</p>
 </dd>
 <dt><strong>crit</strong> <span class="classifier-delimiter">:</span> <span class="classifier">dictionary, optional</span></dt>
-<dd><p class="first last">Critical values of failures at which to optimize
-Charging station capacities</p>
+<dd><p class="first last">Critical values of failures at which to optimize charging station capacities</p>
+</dd>
+<dt><strong>max_cp</strong> <span class="classifier-delimiter">:</span> <span class="classifier">integer, optional</span></dt>
+<dd><p class="first last">Maximal number of charging stations to add to a node</p>
 </dd>
 <dt><strong>min_dist</strong> <span class="classifier-delimiter">:</span> <span class="classifier">float, optional</span></dt>
 <dd><p class="first last">Minimal distance for adding new charging stations</p>
