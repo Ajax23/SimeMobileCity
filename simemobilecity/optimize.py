@@ -6,6 +6,7 @@
 
 
 import sys
+import copy
 import random
 
 import simemobilecity.utils as utils
@@ -60,7 +61,7 @@ class Optimize:
         progress_form = "%"+str(len(str(num_nodes)))+"i"
 
         # Process charging station capacities
-        cap = traj["inp"]["cs"]
+        cap = copy.deepcopy(traj["inp"]["cs"])
 
         # Extract failing probabilities
         extract = traj["cs"].extract(range(num_days), range(num_hours), range(num_users), is_norm=False)
