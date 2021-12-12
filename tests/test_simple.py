@@ -316,7 +316,7 @@ class UserModelCase(unittest.TestCase):
 
         # Initialize optimize object
         opt = sec.Optimize(topo)
-        cap = opt.run(traj, crit={"dist": 0.15, "occ": 0.15})
+        cap = opt.run("output/optimize.obj", traj, crit={"dist": 0.15, "occ": 0.15})
 
         print(len(cap), sum(cap.values()))
 

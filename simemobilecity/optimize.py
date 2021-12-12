@@ -25,11 +25,13 @@ class Optimize:
     ##################
     # Public Methods #
     ##################
-    def run(self, traj, crit={"dist": 0.5, "occ": 0.5}, min_dist=150, trials=1000):
+    def run(self, traj, crit={"dist": 0.15, "occ": 0.15}, min_dist=150, trials=1000):
         """Run optimization.
 
         Parameters
         ----------
+        file_out : string
+            file link for output object file
         traj : dictionary
             Simulation trajectory of the mc code - includes the **cs** and
             **dist** entry
@@ -112,5 +114,9 @@ class Optimize:
             sys.stdout.write("Finished node "+progress_form%(run_id)+"/"+progress_form%(num_nodes)+"...\r")
             sys.stdout.flush()
         print()
+
+        # Save trajectory
+        if file_out:
+            utils.save(cap, file_out)
 
         return cap
