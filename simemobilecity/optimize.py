@@ -77,9 +77,10 @@ class Optimize:
         for node, data in extract.items():
             run_id += 1
             if node in cap.keys():
+                # Calculate total number of sessions for node
+                tot_sessions = data["success"]+data["fail"]["dist"]+data["fail"]["occ"]
                 for failure, thresh in crit.items():
                     # Check if critical value is reached
-                    tot_sessions = data["fail"][failure]+data["success"]
                     fail_prob = data["fail"][failure]/tot_sessions if data["fail"][failure] else 0
                     if fail_prob > thresh:
                         # Calculate number of charging points to add
