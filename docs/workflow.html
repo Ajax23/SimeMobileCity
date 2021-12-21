@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Simulation Workflow &#8212; SimeMobileCity 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/style.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<script type="text/javascript" src="_static/js/jquery-1.12.4.min.js "></script>
+<script type="text/javascript" src="_static/js/jquery-fix.js "></script>
+<script type="text/javascript" src="_static/bootstrap-3.4.1/js/bootstrap.min.js "></script>
+<script type="text/javascript" src="_static/bootstrap-sphinx.js "></script>
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          SimeMobileCity</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="api.html">API</a></li>
+                <li><a href="#">Workflow</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"></ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Simulation Workflow</a><ul>
+<li><a class="reference internal" href="#create-topology">Create Topology</a></li>
+<li><a class="reference internal" href="#define-user-and-poi-objects">Define User and POI objects</a></li>
+<li><a class="reference internal" href="#simulation">Simulation</a></li>
+<li><a class="reference internal" href="#optimization">Optimization</a></li>
+<li><a class="reference internal" href="#analysis">Analysis</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="body col-md-12 content" role="main">
+      
+  <div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10">
+      <div style="text-align: justify; text-justify: inter-word;"><div class="section" id="simulation-workflow">
+<h1>Simulation Workflow<a class="headerlink" href="#simulation-workflow" title="Permalink to this headline">¶</a></h1>
+<p>In this workflow a simply simulation system will be generated and
+analyzed. After installing the package via PyPI</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install simemobilecity
+</pre></div>
+</div>
+<p>it can be imported into the python script</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">simemobilecity</span> <span class="k">as</span> <span class="nn">sec</span>
+</pre></div>
+</div>
+<div class="section" id="create-topology">
+<h2>Create Topology<a class="headerlink" href="#create-topology" title="Permalink to this headline">¶</a></h2>
+<p>First, the topology object is generated by loading the OSM map using an
+OSMnx wrapper function</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Munich, Bavaria , Germany&quot;</span>
+<span class="n">topo</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">Topology</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Since this step takes a long time depending on the complexity of the
+desired map, it is advised to deposit the graph objects for later use</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">sec</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">topo</span><span class="o">.</span><span class="n">get_G</span><span class="p">(),</span> <span class="s2">&quot;data/munich_G.obj&quot;</span><span class="p">)</span>
+<span class="n">sec</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">topo</span><span class="o">.</span><span class="n">get_Gp</span><span class="p">(),</span> <span class="s2">&quot;data/munich_Gp.obj&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The save functionality creates pickle object files containing the graph
+<span class="math">\(G\)</span> and the projected graph <span class="math">\(G_p\)</span>, necessary for running the
+simulation. Once saved, the object files can be loaded later</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;data/munich_G.obj&quot;</span><span class="p">)</span>
+<span class="n">Gp</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;data/munich_Gp.obj&quot;</span><span class="p">)</span>
+<span class="n">topo</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">Topology</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="n">G</span><span class="p">,</span> <span class="s2">&quot;Gp&quot;</span><span class="p">:</span> <span class="n">Gp</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-user-and-poi-objects">
+<h2>Define User and POI objects<a class="headerlink" href="#define-user-and-poi-objects" title="Permalink to this headline">¶</a></h2>
+<p>The next step is defining the user and POI objects which contain the
+probability densities for charging sessions.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">input_all</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">input_daily</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
+<span class="n">input_hourly</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}</span>
+<span class="n">input_exact</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+               <span class="mi">1</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+               <span class="mi">2</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+               <span class="mi">3</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+               <span class="mi">4</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+               <span class="mi">5</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>
+               <span class="mi">6</span><span class="p">:</span> <span class="p">{</span> <span class="mi">0</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>  <span class="mi">8</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">10</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">11</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                   <span class="mi">12</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">13</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mi">14</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">15</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mi">17</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">18</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">19</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">21</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">22</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">23</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Therefore multiple input possibilities exist</p>
+<ul class="simple">
+<li><strong>input_all</strong> - Sets the probability for all hours of all days to the
+same value</li>
+<li><strong>input_daily</strong> - Sets a different probability for all hours of each
+day</li>
+<li><strong>input_hourly</strong> - Sets the same probability for all days for each
+hour</li>
+<li><strong>input_exact</strong> - Sets a different probability for each hour for
+each day</li>
+</ul>
+<p>These probability inputs are then passed to the object constructures of
+the <strong>User</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">user_a</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">User</span><span class="p">(</span><span class="n">input_hourly</span><span class="p">)</span>
+<span class="n">user_b</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">User</span><span class="p">(</span><span class="n">input_exact</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and <strong>POI</strong> classes</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">poi_a</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">Poi</span><span class="p">(</span><span class="n">topo</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cafe&quot;</span><span class="p">]},</span> <span class="n">input_all</span><span class="p">)</span>
+<span class="n">poi_b</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">Poi</span><span class="p">(</span><span class="n">topo</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;restaurant&quot;</span><span class="p">]},</span> <span class="n">input_daily</span><span class="p">)</span>
+
+<span class="n">topo</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pois</span><span class="o">=</span><span class="p">[</span><span class="n">topo</span><span class="o">.</span><span class="n">poi</span><span class="p">({</span><span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;cafe&quot;</span><span class="p">]})])</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="fig1">
+<a class="reference internal image-reference" href="_images/poi.png"><img alt="_images/poi.png" src="_images/poi.png" style="width: 50%;" /></a>
+</div>
+<p>In case of the POIs, a description tag is added for extracting the
+relevant POIs. A list of available tags is available on the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Map_features">OSM
+website</a>.</p>
+</div>
+<div class="section" id="simulation">
+<h2>Simulation<a class="headerlink" href="#simulation" title="Permalink to this headline">¶</a></h2>
+<p>Finally, the simulation is run using the Monte Carlo class by first
+adding the user and POI objects, then defining the simulation parameters
+at the execution command</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">mc</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">MC</span><span class="p">(</span><span class="n">topo</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user_a</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">user_b</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">add_poi</span><span class="p">(</span><span class="n">poi_a</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">add_poi</span><span class="p">(</span><span class="n">poi_b</span><span class="p">)</span>
+<span class="n">mc</span><span class="o">.</span><span class="n">set_drivers</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">traj</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;data/traj.obj&quot;</span><span class="p">,</span> <span class="n">weeks</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">weeks_equi</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Starting</span> <span class="pre">preparation...</span></code></p>
+<p><code class="docutils literal"><span class="pre">Starting</span> <span class="pre">equilibration...</span></code></p>
+<p><code class="docutils literal"><span class="pre">Finished</span> <span class="pre">day</span> <span class="pre">7/7...</span></code></p>
+<p><code class="docutils literal"><span class="pre">Starting</span> <span class="pre">production...</span></code></p>
+<p><code class="docutils literal"><span class="pre">Finished</span> <span class="pre">day</span> <span class="pre">28/28...</span></code></p>
+<p>The definition of the number of drivers is analogous to the definitions
+of the probabilities shown earlier.</p>
+</div>
+<div class="section" id="optimization">
+<h2>Optimization<a class="headerlink" href="#optimization" title="Permalink to this headline">¶</a></h2>
+<p>Once the simulation is finished, the output trajectory can be analyzed
+using the <strong>Optimize</strong> module</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">opt</span> <span class="o">=</span> <span class="n">sec</span><span class="o">.</span><span class="n">Optimize</span><span class="p">(</span><span class="n">topo</span><span class="p">)</span>
+<span class="n">capacity_opt</span> <span class="o">=</span> <span class="n">opt</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;data/opt.obj&quot;</span><span class="p">,</span> <span class="n">traj</span><span class="p">,</span> <span class="n">crit</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;dist&quot;</span><span class="p">:</span> <span class="mf">0.85</span><span class="p">,</span> <span class="s2">&quot;occ&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">})</span>
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">Finished</span> <span class="pre">node</span> <span class="pre">430/430...</span></code></p>
+<p>This new optimized charging station list can be passed to the <strong>MC</strong> class for
+further iterations</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">traj_opt</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;data/traj_opt.obj&quot;</span><span class="p">,</span> <span class="n">weeks</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">weeks_equi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">capacity</span><span class="o">=</span><span class="n">capacity_opt</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<p>The simulated data can be extracted using the trajectory functionalities</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">extract</span> <span class="o">=</span> <span class="n">traj</span><span class="p">[</span><span class="s2">&quot;cs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)),</span> <span class="n">hours</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)),</span> <span class="n">users</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span> <span class="n">is_norm</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This command aggregates the data of all days, all hours, and all users of
+all nodes into a single data structure. The necessary data is converted
+into a pandas Dataframe</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;node&quot;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">],</span> <span class="s2">&quot;Charging Sessions&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;success&quot;</span><span class="p">],</span> <span class="s2">&quot;Occupancy Fail&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;fail&quot;</span><span class="p">][</span><span class="s2">&quot;occ&quot;</span><span class="p">],</span> <span class="s2">&quot;Distance Fail&quot;</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s2">&quot;fail&quot;</span><span class="p">][</span><span class="s2">&quot;dist&quot;</span><span class="p">]}</span> <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">extract</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and then plotted using the scatterplot function of seaborn</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Charging Sessions&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s2">&quot;Charging Sessions&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="figure align-center" id="fig2">
+<a class="reference internal image-reference" href="_images/analyze.png"><img alt="_images/analyze.png" src="_images/analyze.png" style="width: 50%;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>For further information, more thorough variable descriptions and
+functionalities, visit the <a class="reference external" href="https://ajax23.github.io/SimeMobileCity/api.html">API
+section</a> of this
+documentation website.</p>
+<div class="last">      </div>
+    </div>
+  </div>
+</div></div></div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2021, Hamzeh Kraus.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
